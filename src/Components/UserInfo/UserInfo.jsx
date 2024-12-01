@@ -10,9 +10,14 @@ import { loadUserInfo } from '../../redux/UserInfo/Action'
 import { hostName, webHost } from '../../global'
 import { IoEyeOutline } from 'react-icons/io5'
 import { IoEyeOffOutline } from 'react-icons/io5'
+import { storage } from '../../firebase'
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
 const UserInfo = () => {
   const navigate = useNavigate()
-
+  const isAuthenticated = cookies.get("auth-token");
   
   const dispatch = useDispatch()
   useEffect(() => {
@@ -107,39 +112,65 @@ const UserInfo = () => {
       navigate('/logOut')
     }, 2000)
   }
+  async function uploadToFirebase(file) {
+    if (!file) {
+      console.error("File không tồn tại");
+      return null;
+    }
+  
+    try {
+      // Tạo tham chiếu đến Firebase Storage
+      const storageRef = ref(storage, `uploads/${file.name}`);
+  
+      // Upload file
+      const uploadTask = uploadBytesResumable(storageRef, file);
+  
+      // Lắng nghe trạng thái upload
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`Upload đang thực hiện: ${progress}%`);
+        },
+        (error) => {
+          console.error("Lỗi upload:", error);
+        }
+      );
+  
+      // Hoàn thành và lấy URL của ảnh
+      const snapshot = await uploadTask;
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      console.log("File đã lưu tại:", downloadURL);
+      return downloadURL;
+    } catch (error) {
+      console.error("Lỗi upload file:", error);
+      return null;
+    }
+  }
   const SubmitHandler = async (e) => {
     try {
-      if (testCV != null && !window.testCV) {
-        console.log('vao dc r')
-        const formDataCV = new FormData()
-        formDataCV.append('file', testCV)
-
-        const imageResponseCV = await axios.post(`${hostName}/file/upload`, formDataCV, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        CV.push(imageResponseCV.data.data)
-        console.log('CV goi ve ', CV.at(0))
+   
+      if (testCV != null) {
+        console.log("Đang upload file trực tiếp lên Firebase...");
+        const downloadURL = await uploadToFirebase(testCV);
+        if (downloadURL) {
+          CV.push(downloadURL);
+          console.log("CV đã lưu tại URL:", CV.at(0));
+        }
       } else {
-        console.log('cv bi null r ')
+        console.log("File CV bị null");
       }
 
       console.log('test ava null', ImageAva.length == 0 ? 'bi null' : 'ko null')
-      if (testAva != null && !window.testAva) {
-        console.log('vao dc r')
-        const formDataAva = new FormData()
-        formDataAva.append('file', testAva)
-
-        const imageResponseAva = await axios.post(`${hostName}/file/upload`, formDataAva, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        ImageAva.push(imageResponseAva.data.data)
-        console.log('Ava goi ve ', ImageAva.at(0))
+      if (testAva != null) {
+        console.log("Đang upload file trực tiếp lên Firebase...");
+        const downloadURL = await uploadToFirebase(testAva);
+        if (downloadURL) {
+          ImageAva.push(downloadURL);
+          console.log("Ava đã lưu tại URL:", ImageAva.at(0));
+        }
       } else {
-        console.log('ava bi null r ')
+        console.log("File Ava bị null");
       }
 
       let data = JSON.stringify({
@@ -383,7 +414,19 @@ const UserInfo = () => {
                     CV
                   </Badge>
                   <Box p={2}>
-                    CV link: <Text>{user.cv_pdf ? user.cv_pdf : 'Chưa có'}</Text>
+                    {user.cv_pdf ? (
+                    <a 
+                      href={user.cv_pdf} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      style={{ fontSize: '20px', fontWeight: 'bold' }}
+                    >
+                      Tải CV tại đây
+                    </a>
+                  ) : (
+                    <span style={{ fontSize: '18px', color: 'gray' }}>Chưa có</span>
+                  )}
+
                   </Box>
                 </label>
 
@@ -415,8 +458,9 @@ const UserInfo = () => {
               </Button>
             </form>
           </Box>
-
-          <Box mb={40} p={10} h={'auto'} className='form_data3'>
+      {isAuthenticated==null?
+         ( 
+         <Box mb={40} p={10} h={'auto'} className='form_data3'>
             <Box mt={10} fontSize={25} className='form_heading'>
               Thay đổi mật khẩu
             </Box>
@@ -480,6 +524,9 @@ const UserInfo = () => {
             </form>
             <ToastContainer />
           </Box>
+         ):
+         <></>
+        }
         </Box>
       </Box>
     )

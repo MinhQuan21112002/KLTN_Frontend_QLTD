@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
-import { getStorage } from "firebase/storage";
+import { getStorage,ref ,uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -19,8 +19,22 @@ const firebaseConfig = {
   measurementId: "G-N6HJ38EZ2V"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const storage = getStorage(app);
+const firebaseConfig2 = {
+  apiKey: "AIzaSyDOrICKoV780ZW1zJi1zAaHmkrU2v1C0jQ",
+  authDomain: "chatbox-993d2.firebaseapp.com",
+  projectId: "chatbox-993d2",
+  storageBucket: "chatbox-993d2.appspot.com",
+  messagingSenderId: "676443581383",
+  appId: "1:676443581383:web:835b743f46f7225fce07e2",
+  measurementId: "G-NBXP6M67LJ"
+};
 
+// Initialize Firebase
+const app1 = initializeApp(firebaseConfig);
+const storage = getStorage(app1);
+
+const app2 = initializeApp(firebaseConfig2, "SecondaryApp");
+export const db = getFirestore(app2);
+export const auth = getAuth(app2);
+export const provider = new GoogleAuthProvider();
 export {storage};

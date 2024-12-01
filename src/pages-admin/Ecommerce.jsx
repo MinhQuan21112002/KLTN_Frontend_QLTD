@@ -95,7 +95,10 @@ const Ecommerce = () => {
         <div className='bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-44 rounded-xl w-full lg:w-80 p-8 pt-9 m-3 bg-hero-pattern bg-no-repeat bg-cover bg-center'>
           <div className='flex justify-between items-center'>
             <div>
-              <p className='font-bold text-gray-400'>{roomList.length} Phòng</p>
+              <p className='font-bold text-gray-400'>
+              {roomList ? `${roomList.length} ` : "0"}
+                {/* {roomList.length}  */}
+                Phòng</p>
               <p className='text-2xl'>Số lượng phòng</p>
             </div>
           </div>
@@ -121,7 +124,10 @@ const Ecommerce = () => {
               <MdOutlineSupervisorAccount />
             </button>
             <p className='mt-3'>
-              <span className='text-lg font-semibold'>{interviewerList.length} người </span>
+              <span className='text-lg font-semibold'>
+              {interviewerList ? `${interviewerList.length} ` : "0"}
+                {/* {interviewerList.length}  */}
+                người </span>
             </p>
             <p className='text-sm text-gray-400  mt-1'>Người phỏng vấn</p>
           </div>
@@ -135,7 +141,10 @@ const Ecommerce = () => {
               <MdOutlineSupervisorAccount />
             </button>
             <p className='mt-3'>
-              <span className='text-lg font-semibold'>{interviewerList.length} người </span>
+              <span className='text-lg font-semibold'>
+              {interviewerList ? `${interviewerList.length} ` : "0"}
+                {/* {interviewerList.length}  */}
+                người </span>
             </p>
             <p className='text-sm text-gray-400  mt-1'>Ứng viên</p>
           </div>
@@ -166,7 +175,10 @@ const Ecommerce = () => {
                 <p className='text-gray-500 mt-1'>Lượt ứng tuyển</p>
               </div>
               <div className='mt-8'>
-                <p className='text-3xl font-semibold'>{jobList.length}</p>
+                <p className='text-3xl font-semibold'>
+                  {/* {jobList.length} */}
+                  {jobList ? `${jobList.length} ` : "0"}
+                  </p>
 
                 <p className='text-gray-500 mt-1'>Bài đăng</p>
               </div>

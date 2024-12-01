@@ -10,6 +10,8 @@ export const ManageInterviewer = () => {
   const [hrs, sethrs] = useState([])
   const [loading, setLoading] = useState(false)
   const [change, setChange] = useState(false)
+
+  
   useEffect(() => {
     setLoading(true)
     interviewerService
@@ -20,6 +22,7 @@ export const ManageInterviewer = () => {
       })
       .catch((err) => console.log(err.message))
   }, [change])
+
 
   const handleAddBlackList = (id) => {
     const forms = {

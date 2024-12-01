@@ -544,6 +544,11 @@ export const links = [
         title: 'Thống kê',
         icon: <IoStatsChartOutline />,
       },
+      {
+        name: 'ChatApp',
+        title: 'Message',
+        icon: <IoStatsChartOutline />,
+      },
     ],
   },
   // {

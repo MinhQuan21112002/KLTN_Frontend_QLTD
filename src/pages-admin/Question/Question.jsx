@@ -266,16 +266,10 @@ export const Question = () => {
                   <Text>Field: {item.fieldEnum}</Text>
                   <Text>Answer: {item.answer}</Text>
                   <Text>
-                    Skill:{' '}
-                    {item.skillIds.map((id) => {
-                      return `${skills.find((s) => s.id === id).skillName}, `
-                    })}
+                   
                   </Text>
                   <Text>
-                    Position:{' '}
-                    {item.positionIds.map((id) => {
-                      return `${positions.find((s) => s.id === id).positionName}, `
-                    })}
+                   
                   </Text>
                   <IconButton
                     color='#e06cae'

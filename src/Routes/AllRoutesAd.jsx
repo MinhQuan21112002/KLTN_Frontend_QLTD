@@ -50,7 +50,7 @@ import { ManageInterviewer } from "../pages-admin/ManageInterviewer/ManageInterv
 import { ListJob } from "../pages-admin/Job-recruiter/ListJob";
 import { Companies } from "../pages-admin/Companies/Companies";
 import { InterviewResult } from "../pages-admin/ResultInterview/InterviewResult";
-
+import ChatApp from "../Components/Chat/components/ChatApp";
 const AllRoutesAd = () => {
     return (
         <Routes>
@@ -61,7 +61,7 @@ const AllRoutesAd = () => {
         <Route path='/job-posting/' element={<JobPosting/>} />
         <Route path='/list-job/' element={<ListJob/>} />
 
-
+        <Route path="/ChatApp/" element={<ChatApp />} />
         <Route path='/user-account/' element={<Customers/>} />
 
         <Route path="/" element={<Ecommerce/>} />

@@ -22,7 +22,8 @@ import { GoogleLogin, GoogleLogout } from 'react-google-login'
 import { gapi } from 'gapi-script'
 import { interviewService } from '../../Service/interview.service'
 
-const client_id = '854899780211-p148qqqvv8svo8mmviv8tuf6sbmip7iq.apps.googleusercontent.com'
+const client_id =
+    "647285727519-8eadq1h9i67htlfhdgnm6it7dv0cd64m.apps.googleusercontent.com";
 export const GoogleCalendar = ({ startDate, endDate, listEmail, roomId }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = React.useRef()
@@ -56,7 +57,7 @@ export const GoogleCalendar = ({ startDate, endDate, listEmail, roomId }) => {
   }
 
   const responseError = (error) => {
-    console.log(error)
+    console.log("loi"+error)
   }
 
   const onsuccessLogout = (response) => {
@@ -65,13 +66,19 @@ export const GoogleCalendar = ({ startDate, endDate, listEmail, roomId }) => {
 
   useEffect(() => {
     function start() {
-      gapi.client.init({
-        clientId: client_id,
-        scope: 'openid email profile https://www.googleapis.com/auth/calendar.events',
-      })
+      if (!gapi.auth2.getAuthInstance()) {
+        gapi.client.init({
+          clientId: client_id,
+          scope: 'openid email profile https://www.googleapis.com/auth/calendar.events'
+          ,
+        });
+      } else {
+        console.warn('gapi.auth2 has already been initialized.');
+      }
     }
-    gapi.load('client:auth2', start)
-  })
+    gapi.load('client:auth2', start);
+  }, []);
+  
 
   function formatDateTime(dateTime) {
     const dateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/
@@ -168,6 +175,7 @@ export const GoogleCalendar = ({ startDate, endDate, listEmail, roomId }) => {
               accessType='offline'
               isSignedIn={true}
               scope='openid email profile https://www.googleapis.com/auth/calendar.events'
+
             />
             <FormControl pt={4}>
               <FormLabel>Summary</FormLabel>

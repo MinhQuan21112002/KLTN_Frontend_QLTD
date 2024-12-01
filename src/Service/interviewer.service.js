@@ -5,7 +5,7 @@ const API_URL = hostName
 const getMyInterviewer = async (token) => {
   try {
     let config = { headers: { Authorization: `Bearer ${token}` } }
-    const res = await axios.get(`${API_URL}/interview/my-interviewers`, config)
+    const res = await axios.get(`${API_URL}/interview/interviewers`, config)
     return res.data.data
   } catch (error) {
     const axiosError = error

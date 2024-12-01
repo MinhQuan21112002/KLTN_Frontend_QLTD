@@ -56,7 +56,8 @@ const AllJob = () => {
   }, [])
   const userId = JSON.parse(localStorage.getItem('data')).data.userInfo.id
   const jobData = useSelector((store) => store.job.data)
-  const jobdatas = jobData.map((job) => {
+ 
+  const jobdatas = jobData && jobData.length > 0 ? jobData.map((job) => {
     return job.status === true && job.user_id === userId ? (
       <Box borderRadius={20} key={job.id} mt='50px' boxShadow='rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px' mb='30px' p='20px'>
         <Link to={`/jobDetail_Recruiter/${job.id}`}>
@@ -81,11 +82,10 @@ const AllJob = () => {
 
         <ToastContainer />
       </Box>
-    ) : (
-      <div></div>
-    )
-  })
-
+    ) :null;
+    
+  }) : <Text>No jobs found.</Text>;
+  
   return (
     <>
       <h1></h1>

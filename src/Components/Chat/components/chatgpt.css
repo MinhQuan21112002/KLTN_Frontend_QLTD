@@ -1,0 +1,66 @@
+/*#root {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+  }
+  */
+  .logo {
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter;
+    transition: filter 300ms;
+  }
+  .logo:hover {
+    filter: drop-shadow(0 0 2em #646cffaa);
+  }
+  .logo.react:hover {
+    filter: drop-shadow(0 0 2em #61dafbaa);
+  }
+  
+  @keyframes logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @media (prefers-reduced-motion: no-preference) {
+    a:nth-of-type(2) .logo {
+      animation: logo-spin infinite 20s linear;
+    }
+  }
+  
+  .card {
+    padding: 2em;
+    max-height:1200px ;
+  }
+  
+  .read-the-docs {
+    color: #888;
+  }
+
+
+  /* Adjust margins and alignment for ChatGPT and user messages */
+.message-incoming {
+    margin-bottom: 10px!important; /* Adjust the space between messages */
+    min-height: 50px!important;
+  }
+  
+  .message-outgoing {
+    margin-bottom: 10px!important; /* Adjust the space between messages */
+    min-height: 50px!important;
+  }
+  
+  .message-container {
+    max-height: 800px; /* Chiều cao tối đa của container */
+    overflow-y: auto; /* Kích hoạt thanh cuộn dọc */
+    padding-right: 10px; /* Thêm khoảng cách tránh che nội dung bởi thanh cuộn */
+  }
+  .room-container {
+    max-height: 1200px; /* Chiều cao tối đa của container */
+    overflow-y: auto;  /* Kích hoạt thanh cuộn dọc */
+    padding-right: 10px; /* Thêm khoảng cách tránh che nội dung bởi thanh cuộn */
+  }

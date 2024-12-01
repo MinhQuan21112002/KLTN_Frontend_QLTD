@@ -4,14 +4,13 @@ import JobButton from './JobButton'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import JobInterest from './JobInterest'
-import Navbar from '../Navbar/Navbar1'
 import JobSlider from './JobSlider'
 import FeatureCompony from './FeatureCompony'
-import DiscoverJob from './DiscoverJob'
-import JobOption from './JobOption'
 import { useNavigate } from 'react-router-dom'
-
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 const HomePage = () => {
+  const [isAuth, setIsAuth] = useState(cookies.get("refreshToken"));
   const navigate = useNavigate()
   const user = JSON.parse(localStorage.getItem('userInfo'))
   const [search, setSearch] = useState({
@@ -20,6 +19,7 @@ const HomePage = () => {
     experience: 'all',
     salary: 'all',
   })
+  console.log(isAuth);
   const handleChangeSearch = (e) => {
     const { name, value } = e.target
     setSearch((search) => ({ ...search, [name]: value }))
