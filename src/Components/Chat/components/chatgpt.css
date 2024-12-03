@@ -35,14 +35,24 @@
   
   .card {
     padding: 2em;
-    max-height:1200px ;
+    max-height:100% ;
   }
-  
+  .card-body{
+    max-height:50%;
+    padding-top: 0!important;
+    padding-bottom: 0!important;
+    margin-bottom: 1rem;
+   
+
+  }
   .read-the-docs {
     color: #888;
   }
 
-
+.Chat{
+    height: 900px;
+    max-height: 900px;
+}
   /* Adjust margins and alignment for ChatGPT and user messages */
 .message-incoming {
     margin-bottom: 10px!important; /* Adjust the space between messages */
@@ -54,13 +64,21 @@
     min-height: 50px!important;
   }
   
-  .message-container {
-    max-height: 800px; /* Chiều cao tối đa của container */
+.message-container {
+    max-height: 20%; /* Chiều cao tối đa của container */
     overflow-y: auto; /* Kích hoạt thanh cuộn dọc */
+    height: 90%;
     padding-right: 10px; /* Thêm khoảng cách tránh che nội dung bởi thanh cuộn */
-  }
+    margin-bottom: 2%;
+    border-radius: 8px; /* Bo góc container */
+    border: 2px solid rgb(2, 145, 155); /* Viền cùng tông nhưng tối hơn */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+    background-color: rgb(240, 255, 255); 
+}
+
   .room-container {
-    max-height: 1200px; /* Chiều cao tối đa của container */
+    max-height: 50%; /* Chiều cao tối đa của container */
     overflow-y: auto;  /* Kích hoạt thanh cuộn dọc */
-    padding-right: 10px; /* Thêm khoảng cách tránh che nội dung bởi thanh cuộn */
+   
   }
+  

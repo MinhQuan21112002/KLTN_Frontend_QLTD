@@ -58,6 +58,8 @@ const Login = () => {
         toast.success("User logged in successfully!", { position: "top-center" });
         localStorage.setItem("data", JSON.stringify(data));
         localStorage.setItem("avatar", JSON.stringify(data.data.userInfo.avatar));
+        cookies.set("roommail", email);
+        cookies.set("username", data.data.username);
         window.location.replace(`${webHost}`);
       } else if (data.message === "Your account is not activate!!!") {
         toast.error(data.message, { position: "top-center" });
@@ -97,7 +99,7 @@ const Login = () => {
         localStorage.setItem("data", JSON.stringify(data));
         localStorage.setItem("avatar", JSON.stringify(data.data.userInfo.avatar));
         console.log(data.access_token);
-
+        navigate(`/`);
         
       } else if (data.message === "Your account is not activate!!!") {
         toast.error(data.message, { position: "top-center" });

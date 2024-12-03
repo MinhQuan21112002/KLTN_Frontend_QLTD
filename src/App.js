@@ -102,11 +102,24 @@ function App() {
               <AllRoutesAd />
             </div>
             <FooterAdmin />
+            <div className="chat-button" onClick={toggleChat}>
+  </div>
+
+  {/* ChatGPT Popup */}
+  {isChatOpen  &&(
+    <div className={`chat-popup ${gptFirst ? "" : "adjust-right"}`}>
+      <button className="chat-close-btn" onClick={toggleChat}>
+        ✖
+      </button>
+      <ChatGPT />
+    </div>
+  )}
           </div>
         </div>
         </Provider>
       </BrowserRouter>
-  )}
+  )
+}
   return (
     <BrowserRouter>
       <Provider store={store}>
@@ -130,7 +143,7 @@ function App() {
   )}
 
   {/* Chat Button for ChatApp */}
-  {isAuthenticated && (
+  {data!=null && (
     <>
       <div className="chat-button2" onClick={toggleChat2}>
         💬

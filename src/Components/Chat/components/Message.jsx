@@ -108,10 +108,19 @@ export const Message = ({ room, onRoomChange }) => {
           Member
         </h5>
 
-          <MDBCard>
-            <MDBCardBody>
+          <MDBCard  style={{marginTop:"2rem",backgroundColor: "rgb(240, 255, 255)" }}>
+            <MDBCardBody  style={{marginTop:"1rem"}}>
               <div className="room-container">
-                <MDBTypography listUnStyled className="mb-0">
+                <MDBTypography listUnStyled className="mb-0"   style={{
+                 
+                  height: "500px",
+                  maxHeight: "500px",
+                  border: "2px solid  rgb(2, 145, 155)", // Khung viền màu xám nhạt
+                  borderRadius: "8px",          // Thêm khoảng cách bên trong
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" // Đổ bóng nhẹ
+                  , // Đổ bóng nhẹ,
+      backgroundColor: "rgb(240, 255, 255)" 
+                }}>
                   {rooms.map((roomName, index) => (
                     <li
                       key={index}
@@ -142,8 +151,18 @@ export const Message = ({ room, onRoomChange }) => {
         </MDBCol>
 
         <MDBCol md="6" lg="7" xl="8">
-          <MDBTypography listUnStyled>
-            <div className="message-container">
+        <MDBTypography
+    listUnStyled
+    style={{
+      marginTop: "4.2%",
+      height: "700px",
+      maxHeight: "725px",
+      border: "2px solid  rgb(2, 145, 155)", // Khung viền màu xám nhạt
+      borderRadius: "8px",      // Bo góc viền
+      padding: "10px",          // Thêm khoảng cách bên trong
+      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)"
+    }}
+  >   <div className="message-container">
             {messages.map((message) => (
                 <li
                   className={`mb-4 `}
