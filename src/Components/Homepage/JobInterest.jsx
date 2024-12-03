@@ -103,7 +103,7 @@ const JobInterest = () => {
                     <div></div>
                   )
                 })
-                .slice(-8)
+                .slice(0)
             ) : (
               <Center direction='row' spacing={4} w={'80vw'} h={'20vw'}>
                 <Spinner color='blue.500' size='xl' />

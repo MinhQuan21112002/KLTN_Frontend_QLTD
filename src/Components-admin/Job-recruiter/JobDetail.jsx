@@ -8,7 +8,8 @@ import { ToastContainer, toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { hostName } from '../../global'
-
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from '../../firebase'
 function JobDetailRecruiter() {
   const params = useParams()
   const cancelRef = React.useRef()
@@ -38,21 +39,51 @@ function JobDetailRecruiter() {
   const [status, setStatus] = useState(data.status)
   const [language, setLanguage] = useState(data.language)
 
+  async function uploadToFirebase(file) {
+    if (!file) {
+      console.error("File không tồn tại");
+      return null;
+    }
+  
+    try {
+      // Tạo tham chiếu đến Firebase Storage
+      const storageRef = ref(storage, `uploads/${file.name}`);
+  
+      // Upload file
+      const uploadTask = uploadBytesResumable(storageRef, file);
+  
+      // Lắng nghe trạng thái upload
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`Upload đang thực hiện: ${progress}%`);
+        },
+        (error) => {
+          console.error("Lỗi upload:", error);
+        }
+      );
+  
+      // Hoàn thành và lấy URL của ảnh
+      const snapshot = await uploadTask;
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      console.log("File đã lưu tại:", downloadURL);
+      return downloadURL;
+    } catch (error) {
+      console.error("Lỗi upload file:", error);
+      return null;
+    }
+  }
   let img = []
   console.log(testImage)
   const onOpen = async (e) => {
     if (testImage != null && !window.testImage) {
-      const formData = new FormData()
-      console.log('vao dc r', testImage)
-      formData.append('file', testImage)
-
-      const imageResponse = await axios.post(`${hostName}/file/upload`, formData, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-
-      img.push(imageResponse.data.data)
+      const downloadURL = await uploadToFirebase(testImage);
+      if (downloadURL) {
+        img.push(downloadURL);
+        console.log("Image đã lưu tại URL:", img.at(0));
+      }
+      
     } else {
       console.log('img bi null r ')
     }

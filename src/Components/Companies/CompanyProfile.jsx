@@ -14,6 +14,8 @@ const CompanyProfile = () => {
     companyService.getCompanyById(params.id).then((res) => setCompany(res))
     companyService.getJobByCompany(params.id).then((res) => setListJob(res))
   }, [])
+
+  console.log(listJob)
   if (!company) {
     return (
       <Center h={'100vh'} direction='row' spacing={4}>
@@ -64,9 +66,12 @@ const CompanyProfile = () => {
                 <FormLabel fontWeight={'bold'} fontSize={18} w={'100%'} p={4}>
                   JobPosting
                 </FormLabel>
-                {listJob.map((job) => (
-                  <ItemJobInCompany {...job} />
-                ))}
+                {listJob
+  .filter((job) => job.status === true) // Lọc các job có status là false
+  .map((job) => (
+    <ItemJobInCompany key={job.id} {...job} /> // Hiển thị các job đã lọc
+  ))}
+
               </Box>
             </VStack>
 

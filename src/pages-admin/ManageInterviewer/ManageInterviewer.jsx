@@ -7,45 +7,57 @@ import { ToastContainer, toast } from 'react-toastify'
 
 export const ManageInterviewer = () => {
   const accessToken = JSON.parse(localStorage.getItem('data')).access_token
+  const data = JSON.parse(localStorage.getItem('data'))
   const [hrs, sethrs] = useState([])
   const [loading, setLoading] = useState(false)
   const [change, setChange] = useState(false)
 
+  console.log("data " +data.data.userInfo.id)
   
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     interviewerService
       .getMyInterviewer(accessToken)
       .then((res) => {
-        sethrs(res)
-        setLoading(false)
+        const filteredHrs = res.filter((hr) => hr.reccerID === data.data.userInfo.id); // Lọc HR theo reccerId
+        sethrs(filteredHrs);
+        setLoading(false);
       })
-      .catch((err) => console.log(err.message))
-  }, [change])
+      .catch((err) => {
+        console.log(err.message);
+        setLoading(false);
+      });
+  }, [change]);
+  
+  console.log(hrs)
 
 
   const handleAddBlackList = (id) => {
     const forms = {
       userId: id,
       description: 'string',
-    }
+    };
     userService
       .addBlacklist(accessToken, forms)
       .then((res) => {
-        toast.success(res.message)
-        setChange(!change)
+        toast.success(res.message);
+        setChange((prev) => !prev); 
+        
       })
-      .catch((error) => console.log(error.message))
-  }
+      .catch((error) => console.log(error.message));
+  };
+  
   const handleRemoveBlackList = (id) => {
     userService
       .removeBlacklist(accessToken, id)
       .then((res) => {
-        toast.success(res.message)
-        setChange(!change)
+        toast.success(res.message);
+        setChange((prev) => !prev); 
       })
-      .catch((error) => console.log(error.message))
-  }
+      .catch((error) => console.log(error.message));
+  };
+  console.log(hrs);
+  
 
   if (loading) {
     return (
@@ -104,9 +116,9 @@ export const ManageInterviewer = () => {
                       </VStack>
                     </HStack>
 
-                    {hr.status === 'INPROCESS' ? (
+                    {hr.blackList === 'INPROCESS' ? (
                       <Button onClick={() => handleAddBlackList(hr.id)} color={'white'} backgroundColor={'#30f0b6'}>
-                        ACTIVE
+                          ACTIVE
                       </Button>
                     ) : (
                       <Button onClick={() => handleRemoveBlackList(hr.id)} color={'white'} backgroundColor={'#fa236e'}>

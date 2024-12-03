@@ -21,11 +21,8 @@ import './style4.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { loadJob } from '../../redux/Job-posting/Action'
-import uuid from 'react-uuid'
-import { Link } from 'react-router-dom'
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { storage } from '../../firebase.js'
-import { v4 } from 'uuid'
 import { hostName } from '../../global.js'
 const JobPosting = () => {
   const dispatch = useDispatch()
@@ -57,21 +54,60 @@ const JobPosting = () => {
   const [detailJob, setDetailJob] = useState('')
   const [requirements, setRequirements] = useState('')
   const [interest, setInterest] = useState('')
-  const [image, setImage] = useState('')
+  const [image, setImage] = useState()
 
-  const handleUpload = (e) => {
-    const storageRef = ref(storage, `/files/${e.target.files[0].name + v4()}`)
-    uploadBytes(storageRef, e.target.files[0]).then((data) => {
-      console.log(data)
-      getDownloadURL(data.ref).then((url) => {
-        setImage(url)
-        console.log('image', url)
-      })
-    })
+  async function uploadToFirebase(file) {
+    if (!file) {
+      console.error("File không tồn tại");
+      return null;
+    }
+    try {
+      // Tạo tham chiếu đến Firebase Storage
+      const storageRef = ref(storage, `uploads/${file.name}`);
+  
+      // Upload file
+      const uploadTask = uploadBytesResumable(storageRef, file);
+  
+      // Lắng nghe trạng thái upload
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`Upload đang thực hiện: ${progress}%`);
+        },
+        (error) => {
+          console.error("Lỗi upload:", error);
+        }
+      );
+  
+      // Hoàn thành và lấy URL của ảnh
+      const snapshot = await uploadTask;
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      console.log("File đã lưu tại:", downloadURL);
+      return downloadURL;
+    } catch (error) {
+      console.error("Lỗi upload file:", error);
+      return null;
+    }
   }
-
+  let img = []
+  console.log(image)
   const HandleSubmit = async (e) => {
-    e.preventDefault()
+    
+    console.log(image)
+       
+    if (image != null ) {
+      const downloadURL = await uploadToFirebase(image);
+      if (downloadURL) {
+        img.push(downloadURL);
+        console.log("Image đã lưu tại URL:", img.at(0));
+      }
+      
+    } else {
+      console.log('img bi null r ')
+    }
+
+
     if (name === '') {
       toast.warning('name is required!', {
         position: 'top-center',
@@ -130,18 +166,12 @@ const JobPosting = () => {
       })
     } else {
       try {
-        console.log('image', image)
-        const formData = new FormData()
-        formData.append('file', image)
 
-        const imageResponse = await axios.post(`${hostName}/file/upload`, formData, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        const imageData = imageResponse.data.data
+    
+       
+        const imageData = img.at(0);
 
-        console.log('hình anh tren firebase', imageResponse)
+        console.log("hinh ne "+img.at(0));
         let data = JSON.stringify({
           name,
           position,
@@ -311,8 +341,27 @@ const JobPosting = () => {
                     onChange={(e) => setLocation(e.target.value)}>
                     <option value='all'>Địa điểm</option>
                     <option value='Hồ Chí Minh'>Hồ Chí Minh</option>
-                    <option value='Đà Nẵng'>Đà Nẵng</option>
-                    <option value='Hà Nội'>Hà Nội</option>
+<option value='Đà Nẵng'>Đà Nẵng</option>
+<option value='Hà Nội'>Hà Nội</option>
+<option value='Cần Thơ'>Cần Thơ</option>
+<option value='Hải Phòng'>Hải Phòng</option>
+<option value='Quảng Ninh'>Quảng Ninh</option>
+<option value='Thừa Thiên Huế'>Thừa Thiên Huế</option>
+<option value='Bình Dương'>Bình Dương</option>
+<option value='Đồng Nai'>Đồng Nai</option>
+<option value='Khánh Hòa'>Khánh Hòa</option>
+<option value='Lâm Đồng'>Lâm Đồng</option>
+<option value='Nghệ An'>Nghệ An</option>
+<option value='Thanh Hóa'>Thanh Hóa</option>
+<option value='Bình Thuận'>Bình Thuận</option>
+<option value='Bà Rịa - Vũng Tàu'>Bà Rịa - Vũng Tàu</option>
+<option value='Kiên Giang'>Kiên Giang</option>
+<option value='An Giang'>An Giang</option>
+<option value='Bắc Ninh'>Bắc Ninh</option>
+<option value='Hà Nam'>Hà Nam</option>
+<option value='Thái Nguyên'>Thái Nguyên</option>
+<option value='Quảng Ngãi'>Quảng Ngãi</option>
+
                   </Select>
                 </div>
                 <Box mt={6} className='flex' style={{ marginLeft: '10px' }}>

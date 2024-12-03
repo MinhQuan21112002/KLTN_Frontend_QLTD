@@ -17,6 +17,7 @@ import { BsBag, BsFillStarFill } from 'react-icons/bs'
 import { CiLocationOn } from 'react-icons/ci'
 import { loadJobDetail } from '../../redux/JobDetail/Action'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { ToastContainer, toast } from 'react-toastify'
 import { hostName, webHost } from '../../global'
@@ -31,6 +32,7 @@ import { companyService } from '../../Service/company.service'
 import { loadUserInfo } from '../../redux/UserInfo/Action'
 
 function JobDetail() {
+  const navigate = useNavigate()
   const [companies, setCompanies] = useState([])
   useEffect(() => {
     companyService.getAllCompany().then((res) => setCompanies(res))
@@ -41,6 +43,15 @@ function JobDetail() {
       ? JSON.parse(localStorage.getItem('data')).access_token
       : null
   const submitHandler = async (e) => {
+    if(accessToken===null)
+    {
+      toast.info('Hãy Đăng nhập trước', {
+        position: 'top-center',
+      })
+      setTimeout(() => {
+        navigate('/login')
+      }, 3000); // Delay 3 giây
+    }
     if (user.cv_pdf === null) {
       toast.info('Hãy tạo CV trong profile trước', {
         position: 'top-center',
