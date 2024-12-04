@@ -1,214 +1,73 @@
-import { Box, Button, Flex, Grid, GridItem, Image } from '@chakra-ui/react'
-import React from 'react'
+import { Box, Button, Flex, Grid, Heading, Image } from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { collection, onSnapshot, query } from 'firebase/firestore';
+import { db } from "../../firebase";  // Đảm bảo import db từ firebase cấu hình của bạn
 
 const JobButton = () => {
-  const compony = [
-    {
-      id: 1,
-      src: 'https://static.naukimg.com/s/0/0/i/trending-naukri/remote.svg',
-    },
-  ]
+  const [suggest, setSuggest] = useState([]);
+
+  // Lấy dữ liệu từ Firestore
+  useEffect(() => {
+    const messagesRef = collection(db, "popularJob"); // Thay 'popularJob' bằng tên collection của bạn
+    const queryRooms = query(messagesRef);
+    const unsubscribe = onSnapshot(queryRooms, (snapshot) => {
+      const roomsSet = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        if (data) {
+          roomsSet.push({ ...data, id: doc.id });
+        }
+      });
+      setSuggest(roomsSet); // Cập nhật state với dữ liệu lấy từ Firestore
+    });
+
+    // Cleanup function khi component unmount
+    return () => unsubscribe();
+  }, []); // Chạy khi component được mount lần đầu
+
   return (
-    <div>
-      <Box width='80%' margin='auto' mt={16}>
-        <Grid h='170px' templateRows='repeat(auto, 2fr)'>
-          <Flex justifyContent='space-evenly'>
-            <Button
-              textAlign='center'
-              h='70px'
-              width='150px'
-              bg='white'
-              boxShadow='rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px'
-              borderTopLeftRadius={20}
-              borderBottomRightRadius={20}
-              _hover={{
-                bg: 'white',
-                boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
-              }}>
-              <Image src='https://static.naukimg.com/s/0/0/i/trending-naukri/remote.svg' height={10} /> <p>Remote</p>
-            </Button>
-            <Button
-              textAlign='center'
-              h='70px'
-              width='140px'
-              bg='white'
-              boxShadow='rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px'
-              borderTopLeftRadius={20}
-              borderBottomRightRadius={20}
-              _hover={{
-                bg: 'white',
-                boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
-              }}>
-              <Image src='https://static.naukimg.com/s/0/0/i/trending-naukri/mnc.svg' height={10} /> <p>Sale</p>
-            </Button>
-            <Button
-              textAlign='center'
-              h='70px'
-              width='190px'
-              bg='white'
-              boxShadow='rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px'
-              borderTopLeftRadius={20}
-              borderBottomRightRadius={20}
-              _hover={{
-                bg: 'white',
-                boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
-              }}>
-              <Image src='https://static.naukimg.com/s/0/0/i/trending-naukri/finance.svg' height={10} /> <p>Ngân Hàng</p>
-            </Button>
-            <Button
-              textAlign='center'
-              h='70px'
-              width='190px'
-              bg='white'
-              boxShadow='rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px'
-              borderTopLeftRadius={20}
-              borderBottomRightRadius={20}
-              _hover={{
-                bg: 'white',
-                boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
-              }}>
-              <Image src='https://static.naukimg.com/s/0/0/i/trending-naukri/temporary-wfh.svg' height={10} /> <p>Part-time</p>
-            </Button>
-            <Button
-              textAlign='center'
-              h='70px'
-              width='170px'
-              bg='white'
-              boxShadow='rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px'
-              borderTopLeftRadius={20}
-              borderBottomRightRadius={20}
-              _hover={{
-                bg: 'white',
-                boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
-              }}>
-              <Image src='https://static.naukimg.com/s/0/0/i/trending-naukri/fortune-500.svg' height={10} /> <p>Giáo viên</p>
-            </Button>
-            <Button
-              textAlign='center'
-              h='70px'
-              width='170px'
-              bg='white'
-              boxShadow='rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px'
-              borderTopLeftRadius={20}
-              borderBottomRightRadius={20}
-              _hover={{
-                bg: 'white',
-                boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
-              }}>
-              <Image src='https://static.naukimg.com/s/0/0/i/trending-naukri/project-management.svg' height={10} /> <p>Quản lý</p>
-            </Button>
-          </Flex>
-          <Flex justifyContent='center'>
-            <Button
-              textAlign='center'
-              h='70px'
-              width='130px'
-              mr={5}
-              bg='white'
-              boxShadow='rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px'
-              borderTopLeftRadius={20}
-              borderBottomRightRadius={20}
-              _hover={{
-                bg: 'white',
-                boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
-              }}>
-              <Image src='https://static.naukimg.com/s/0/0/i/trending-naukri/hr.svg' height={10} /> <p>HR</p>
-            </Button>
-            <Button
-              textAlign='center'
-              h='70px'
-              width='170px'
-              mr={5}
-              bg='white'
-              boxShadow='rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px'
-              borderTopLeftRadius={20}
-              borderBottomRightRadius={20}
-              _hover={{
-                bg: 'white',
-                boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
-              }}>
-              <Image src='https://static.naukimg.com/s/0/0/i/trending-naukri/data-science.svg' height={10} /> <p>Phân tích data</p>
-            </Button>
-            <Button
-              textAlign='center'
-              h='70px'
-              width='170px'
-              mr={5}
-              bg='white'
-              boxShadow='rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px'
-              borderTopLeftRadius={20}
-              borderBottomRightRadius={20}
-              _hover={{
-                bg: 'white',
-                boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
-              }}>
-              <Image src='https://static.naukimg.com/s/0/0/i/trending-naukri/analytics.svg' height={10} /> <p>Kế Toán</p>
-            </Button>
-            <Button
-              textAlign='center'
-              h='70px'
-              width='190px'
-              mr={5}
-              bg='white'
-              boxShadow='rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px'
-              borderTopLeftRadius={20}
-              borderBottomRightRadius={20}
-              _hover={{
-                bg: 'white',
-                boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
-              }}>
-              <Image src='https://static.naukimg.com/s/0/0/i/trending-naukri/engineering.svg' height={10} /> <p>Lập trình viên</p>
-            </Button>
-            <Button
-              textAlign='center'
-              h='70px'
-              width='170px'
-              mr={5}
-              bg='white'
-              boxShadow='rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px'
-              borderTopLeftRadius={20}
-              borderBottomRightRadius={20}
-              _hover={{
-                bg: 'white',
-                boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
-              }}>
-              <Image src='https://static.naukimg.com/s/0/0/i/trending-naukri/startup.svg' height={10} /> <p>Full-Time</p>
-            </Button>
-            <Button
-              textAlign='center'
-              h='70px'
-              width='170px'
-              mr={5}
-              bg='white'
-              boxShadow='rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px'
-              borderTopLeftRadius={20}
-              borderBottomRightRadius={20}
-              _hover={{
-                bg: 'white',
-                boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
-              }}>
-              <Image src='https://static.naukimg.com/s/0/0/i/trending-naukri/startup.svg' height={10} /> <p>Fresher</p>
-            </Button>
-            <Button
-              textAlign='center'
-              h='70px'
-              width='170px'
-              mr={5}
-              bg='white'
-              boxShadow='rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px'
-              borderTopLeftRadius={20}
-              borderBottomRightRadius={20}
-              _hover={{
-                bg: 'white',
-                boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
-              }}>
-              <Image src='https://static.naukimg.com/s/0/0/i/trending-naukri/startup.svg' height={10} /> <p>Senior</p>
-            </Button>
-          </Flex>
+    <div style={{marginBottom:"15%"}}>
+        <Heading fontFamily={'Montserrat'} mt={5} textAlign={'center'} fontWeight={'700'} fontSize={'27px'} lineHeight={'40px'} mb={'6px'}>
+          Gợi ý công việc
+        </Heading>
+      <Box width='80%' height='auto' margin='auto' mt={16}>
+        <Grid h='170px' templateRows='repeat(6, 2fr)'>
+        <Flex justifyContent='center'>
+  <Grid 
+    templateColumns='repeat(6, 3fr)' // 6 button mỗi hàng
+    gap={7} // Khoảng cách giữa các button
+  >
+    {suggest && suggest.map((job, index) => (
+      <Link 
+        key={index} 
+        to={`/jobpage-search/${job.name || 'all'}/${job.location || 'all'}/${job.exp || 'all'}/${job.salary || 'all'}`}
+      >
+        <Button
+          textAlign="center"
+          h="70px"
+          width="170px"
+          bg="white"
+          boxShadow="rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px"
+          borderTopLeftRadius={20}
+          borderBottomRightRadius={20}
+          _hover={{
+            bg: 'white',
+            boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+          }}
+        >
+          <Image src={job.imgLink} height={10} />{' '}
+          <p>{job.name}</p>
+        </Button>
+      </Link>
+    ))}
+  </Grid>
+</Flex>
+
         </Grid>
       </Box>
     </div>
-  )
-}
+  );
+};
 
-export default JobButton
+export default JobButton;

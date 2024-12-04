@@ -35,7 +35,7 @@ import {
   BiNews,
   BiVideo,
 } from 'react-icons/bi'
-import { IoMdContacts } from 'react-icons/io'
+import { IoMdBulb, IoMdContacts } from 'react-icons/io'
 import { RiContactsLine, RiStockLine } from 'react-icons/ri'
 import { MdOutlineSupervisorAccount } from 'react-icons/md'
 import { HiOutlineRefresh } from 'react-icons/hi'
@@ -59,8 +59,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { loadRoom } from '../redux/Room/Action'
 import { loadInterviewer } from '../redux/Interviewer/Action'
-import { IoStatsChartOutline } from 'react-icons/io5'
+import { IoBulbOutline, IoChatbubblesOutline, IoStatsChartOutline } from 'react-icons/io5'
 import { IoAlbumsOutline } from 'react-icons/io5'
+import { IoMdPaper } from 'react-icons/io';   // Đảm bảo nhập khẩu đúng IoIosNewspaper
 
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
@@ -547,7 +548,17 @@ export const links = [
       {
         name: 'ChatApp',
         title: 'Message',
-        icon: <IoStatsChartOutline />,
+        icon: <IoChatbubblesOutline/>,
+      },
+      {
+        name: 'suggest',
+        title: 'Danh mục gợi ý',
+        icon: <IoMdBulb />,
+      },
+      {
+        name: 'news',
+        title: 'Bảng tin',
+        icon: <IoMdPaper />,
       },
     ],
   },

@@ -17,7 +17,7 @@ function ChatApp() {
     setRoom(newRoom);
   };
 
-  if (!isAuth) {
+  if (!cookies.get("auth-token")) {
     return (
       <AppWrapper
         isAuth={isAuth}

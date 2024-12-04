@@ -8,6 +8,7 @@ import JobSlider from './JobSlider'
 import FeatureCompony from './FeatureCompony'
 import { useNavigate } from 'react-router-dom'
 import Cookies from "universal-cookie";
+import News from './News'
 const cookies = new Cookies();
 const HomePage = () => {
   const [isAuth, setIsAuth] = useState(cookies.get("refreshToken"));
@@ -50,10 +51,28 @@ const HomePage = () => {
           </Box>
           <Box w={'223px'} h={'100%'} pr={'0px'} pt={'4px'} pl={'10px'} pb={'6px'}>
             <Select fontFamily={'Montserrat'} onChange={handleChangeSearch} name='location' color={'#8292b4'} border={'none'} defaultValue='all'>
-              <option value='all'>Địa điểm</option>
-              <option value='Hồ Chí Minh'>Hồ Chí Minh</option>
-              <option value='Đà Nẵng'>Đà Nẵng</option>
-              <option value='Hà Nội'>Hà Nội</option>
+            <option value='all'>Địa điểm</option>
+                    <option value='Hồ Chí Minh'>Hồ Chí Minh</option>
+<option value='Đà Nẵng'>Đà Nẵng</option>
+<option value='Hà Nội'>Hà Nội</option>
+<option value='Cần Thơ'>Cần Thơ</option>
+<option value='Hải Phòng'>Hải Phòng</option>
+<option value='Quảng Ninh'>Quảng Ninh</option>
+<option value='Thừa Thiên Huế'>Thừa Thiên Huế</option>
+<option value='Bình Dương'>Bình Dương</option>
+<option value='Đồng Nai'>Đồng Nai</option>
+<option value='Khánh Hòa'>Khánh Hòa</option>
+<option value='Lâm Đồng'>Lâm Đồng</option>
+<option value='Nghệ An'>Nghệ An</option>
+<option value='Thanh Hóa'>Thanh Hóa</option>
+<option value='Bình Thuận'>Bình Thuận</option>
+<option value='Bà Rịa - Vũng Tàu'>Bà Rịa - Vũng Tàu</option>
+<option value='Kiên Giang'>Kiên Giang</option>
+<option value='An Giang'>An Giang</option>
+<option value='Bắc Ninh'>Bắc Ninh</option>
+<option value='Hà Nam'>Hà Nam</option>
+<option value='Thái Nguyên'>Thái Nguyên</option>
+<option value='Quảng Ngãi'>Quảng Ngãi</option>
             </Select>
           </Box>
           <Box w={'223px'} h={'100%'} pr={'0px'} pt={'4px'} pl={'10px'} pb={'6px'}>
@@ -95,6 +114,7 @@ const HomePage = () => {
       <JobSlider />
       {/* <DiscoverJob />
       <JobOption /> */}
+       <News />
     </Box>
   )
 }

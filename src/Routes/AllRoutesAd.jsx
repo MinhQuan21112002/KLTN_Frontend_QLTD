@@ -51,15 +51,30 @@ import { ListJob } from "../pages-admin/Job-recruiter/ListJob";
 import { Companies } from "../pages-admin/Companies/Companies";
 import { InterviewResult } from "../pages-admin/ResultInterview/InterviewResult";
 import ChatApp from "../Components/Chat/components/ChatApp";
+import { Suggestion } from "../pages-admin/suggestForCandidate/Suggestion.jsx";
+import { AddSuggestion } from "../pages-admin/suggestForCandidate/AddSuggestion";
+import { EditSuggestion} from "../pages-admin/suggestForCandidate/Editsuggestion";
+import { AllNews } from "../pages-admin/Admin_News/AllNews.jsx";
+import { AddNews } from "../pages-admin/Admin_News/AddNews.jsx";
+import { NewEdit } from "../pages-admin/Admin_News/NewsEdit.jsx";
 const AllRoutesAd = () => {
     return (
         <Routes>
         {/* dashboard  */}
         <Route path='/userInfo/' element={<UserInfo/>} /> 
+        <Route path='/suggest/' element={<Suggestion/>} />
+
+        <Route path='/news/' element={<AllNews/>} />
+        <Route path='/addNews/' element={<AddNews/>} />
+        <Route path='/editNews/:id' element={<NewEdit/>} />
+
+
+        <Route path='/addSuggest/' element={<AddSuggestion/>} /> 
+        <Route path="/edit-suggestion/:id" element={<EditSuggestion />} />
         <Route path='/jobDetail_Recruiter/:id' element={<JobDetailRecruiter/>} />
         <Route path='/allJob_Recruiter/' element={<AllJob/>} />
         <Route path='/job-posting/' element={<JobPosting/>} />
-        <Route path='/list-job/' element={<ListJob/>} />
+        <Route path='/list-job/' element={<ListJob/>} /> 
 
         <Route path="/ChatApp/" element={<ChatApp />} />
         <Route path='/user-account/' element={<Customers/>} />

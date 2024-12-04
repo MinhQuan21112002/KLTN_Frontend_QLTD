@@ -19,12 +19,12 @@ import './index.css'
 
 export const CurriculumVitae = () => {
   const initState = {
-    name: 'Nguyễn Lê Quốc Khánh',
+    name: 'Nguyễn Vũ Minh Quân',
     position: 'FullStack Developer',
     info: [
       ['Name', 'Nguyễn Lê Quốc Khánh'],
-      ['Date Of Birth', '10/02/2002'],
-      ['Phone', '0349519943'],
+      ['Date Of Birth', '21/11/2002'],
+      ['Phone', '0385542672'],
       ['Gmail', 'nguyenkhanh2kpi@gmail.com'],
       ['Address', 'Tân Thanh, Lâm Hà, Lâm Đồng'],
     ],

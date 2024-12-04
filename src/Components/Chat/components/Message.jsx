@@ -36,6 +36,8 @@ export const Message = ({ room, onRoomChange }) => {
   const messagesRef = collection(db, "messages");
   const currentUser = auth.currentUser?.displayName || "Anonymous";
   const [username, setUsername] = useState(cookies.get("username"));
+  const [usernameGG, setusernameGG] = useState(cookies.get("userNameGG"));
+ 
   useEffect(() => {
     const queryRooms = query(messagesRef, orderBy("room"), orderBy("createdAt"));
     const unsubscribe = onSnapshot(queryRooms, (snapshot) => {
@@ -71,6 +73,8 @@ export const Message = ({ room, onRoomChange }) => {
 
     return () => unsubscribe();
   }, [room]);
+
+  console.log(messages)
 
   const handleRoomChange = (roomName) => {
     // Cập nhật trạng thái isRead thành true khi người dùng chọn phòng
@@ -168,10 +172,10 @@ export const Message = ({ room, onRoomChange }) => {
                   className={`mb-4 `}
                   key={message.id}
                 >
-                  {message.user === username ? 
+                  {(message.user === username||message.user === usernameGG) ? 
                   <>
                 <div className="message-right-container" >
-                  <MDBCard className={message.user === username ? "message-right" : "message-left"}>
+                  <MDBCard className={(message.user === username||message.user === usernameGG) ? "message-right" : "message-left"}>
                     <MDBCardHeader className="d-flex justify-content-between p-3">
                       <p className="fw-bold mb-0">{message.user}</p>
                       <p className="text-muted small mb-0">
@@ -186,7 +190,7 @@ export const Message = ({ room, onRoomChange }) => {
                   <img
                     src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
                     alt="avatar"
-                    className={`rounded-circle d-flex align-self-start shadow-1-strong ${message.user === username ? "me-3" : "ms-3"}`}
+                    className={`rounded-circle d-flex align-self-start shadow-1-strong ${(message.user === username||message.user === usernameGG) ? "me-3" : "ms-3"}`}
                     width="60"
                   />
                 </div>
@@ -194,7 +198,7 @@ export const Message = ({ room, onRoomChange }) => {
                 :
                 <>
                  <div className="message-left-container">
-                  <MDBCard className={message.user === username ? "message-right" : "message-left"}>
+                  <MDBCard className={(message.user === username||message.user === usernameGG) ? "message-right" : "message-left"}>
                     <MDBCardHeader className="d-flex justify-content-between p-3">
                       <p className="fw-bold mb-0">{message.user}</p>
                       <p className="text-muted small mb-0">
@@ -209,7 +213,7 @@ export const Message = ({ room, onRoomChange }) => {
                   <img
                     src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
                     alt="avatar"
-                    className={`rounded-circle d-flex align-self-start shadow-1-strong ${message.user === username ? "me-3" : "ms-3"}`}
+                    className={`rounded-circle d-flex align-self-start shadow-1-strong ${(message.user === username||message.user === usernameGG) ? "me-3" : "ms-3"}`}
                     width="60"
                   />
                 </div>

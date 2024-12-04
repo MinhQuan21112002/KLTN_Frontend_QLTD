@@ -16,6 +16,7 @@ import { jwtDecode } from "jwt-decode";
 import Cookies from "universal-cookie";
 import { signInWithPopup, signOut } from "firebase/auth";
 import { auth,provider } from "../../firebase";
+import googleLogo from "./google.png";
 const cookies = new Cookies();
 
 const Login = () => {
@@ -166,9 +167,68 @@ const Login = () => {
             </Button>
        
           </form>
-          <button onClick={signInWithGoogle}>Sign In With Google</button>
-          <Link fontFamily={'Montserrat'} to={`/resetPassword`}>
-              <button style={{ marginTop: '20px' }}>Quên tài khoản </button>
+         
+            <button
+      className="google-signin-btn"
+      onClick={signInWithGoogle}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "10px",
+        backgroundColor: "white",
+        color: "#757575",
+        fontSize: "16px",
+        fontWeight: "bold",
+        border: "1px solid #ccc",
+        borderRadius: "5px",
+        padding: "10px 20px",
+        cursor: "pointer",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+        transition: "box-shadow 0.2s ease, background-color 0.2s ease",
+        marginBottom:"5%",
+        marginTop:"2%",
+        width:"74%"
+      }}
+    >
+      <img
+        src={googleLogo}
+        alt="Google Logo"
+        style={{
+          width: "24px",
+          height: "24px",
+          marginRight: "10px",
+        }}
+      />
+      Sign In With Google
+    </button>
+
+          <Link fontFamily={'Montserrat'} to={`/resetPassword`} style={{width:"74%"}}>
+          <button
+      className="google-signin-btn"
+      onClick={signInWithGoogle}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "10px",
+        backgroundColor: "white",
+        color: "#757575",
+        fontSize: "16px",
+        fontWeight: "bold",
+        border: "1px solid #ccc",
+        borderRadius: "5px",
+        padding: "10px 20px",
+        cursor: "pointer",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+        transition: "box-shadow 0.2s ease, background-color 0.2s ease",
+        marginBottom:"5%",
+        marginTop:"1%",
+        width:"100%",
+      }}
+    >
+    Quên tài khoản 
+    </button>
             </Link>
           <ToastContainer />
         </Box>

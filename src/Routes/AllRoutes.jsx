@@ -19,6 +19,8 @@ import VerifyPassword from "../Components/ResetPassword/verify";
 import ChangePassword from "../Components/ResetPassword/ChangePassword";
 import ChatGPT from "../Components/ChatGPT/ChatGPT"; 
 import ChatApp from "../Components/Chat/components/ChatApp";
+import { News2 } from "../Components/News/News2";
+import { NewDetailHome } from "../Components/News/NewDetailHome";
 // import JobPosting from "../Components/Job-recruiter/Job-Posting";
 // import JobDetailRecruiter from "../Components/Job-recruiter/JobDetail";
 // import AllJob from  "../Components/Job-recruiter/AllJob";
@@ -28,7 +30,7 @@ const AllRoutes = () => {
             {/* <Route path='/jobDetail_Recruiter/:id' element={<JobDetailRecruiter/>} />
       <Route path='/allJob_Recruiter/' element={<AllJob/>} />
       <Route path='/job-posting/' element={<JobPosting/>} /> */}
-             <Route path="/chatGPT/" element={<ChatGPT />} />
+             <Route path="/chatGPT/" element={<ChatGPT />} />   
              <Route path="/ChatApp/" element={<ChatApp />} />
             <Route path="/userInfo/" element={<UserInfo />} />
             <Route path="/verify/:email/" element={<Verify />} />
@@ -50,6 +52,9 @@ const AllRoutes = () => {
             <Route path="/jobpage-search/:location/:experience/:salary" element={<JobPage/>} />
             <Route path="/jobpage/:jobId" element={<JobDetail />} />
             <Route path="/services" element={<ServicesPage />} />
+
+            <Route path="/news" element={<News2/>} />
+            <Route path="/news/:id" element={<NewDetailHome />} />
 
             {/* khanhs */}
             <Route path="/events" element={<Events />} />
