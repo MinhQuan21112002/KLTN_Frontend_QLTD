@@ -116,7 +116,7 @@ export const ManageInterviewer = () => {
                       </VStack>
                     </HStack>
 
-                    {hr.blackList === 'INPROCESS' ? (
+                    {hr.status === 'INPROCESS' ? (
                       <Button onClick={() => handleAddBlackList(hr.id)} color={'white'} backgroundColor={'#30f0b6'}>
                           ACTIVE
                       </Button>
