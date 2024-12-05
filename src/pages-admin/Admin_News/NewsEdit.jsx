@@ -247,6 +247,7 @@ export const NewEdit = () => {
                         type="file"
                         accept="image/*"
                         onChange={handleChangeFile}
+                         id="fileInput"
                         className="hidden"
                     />
                     <Img

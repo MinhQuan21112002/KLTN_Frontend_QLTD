@@ -85,9 +85,10 @@ export const AddNews = () => {
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
                     // setLoading(false);
-                    setForm((prevForm) => ({ ...prevForm, image: url }));
+                    setForm((prevForm) => ({ ...prevForm, imgLink: url }));
                     toast.success("image to fire base");
                 });
+              
             }
         );
     };
