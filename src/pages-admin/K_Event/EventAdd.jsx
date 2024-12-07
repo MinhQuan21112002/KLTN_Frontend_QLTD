@@ -9,7 +9,8 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase";
 import alt_img from "../../data/product9.jpg";
 import { useNavigate } from "react-router-dom";
-
+import ReactQuill from "react-quill";   
+import "react-quill/dist/quill.snow.css";
 export const EventAdd = () => {
     const naigate = useNavigate();
     const accessToken = JSON.parse(localStorage.getItem("data")).access_token;
@@ -23,10 +24,19 @@ export const EventAdd = () => {
         content: "",
     });
     const [errors, setErrors] = useState({});
-    const handleOnChangeForm = (event) => {
-        const { name, value } = event.target;
-        setForm((prevForm) => ({ ...prevForm, [name]: value }));
-        console.log(JSON.stringify(form));
+    const handleOnChangeForm = (e) => {
+        if (typeof e === 'string') {  // Nếu đây là giá trị từ ReactQuill
+            setForm((prevForm) => ({
+                ...prevForm,
+                content: e,  // Cập nhật trực tiếp nội dung
+            }));
+        } else {
+            const { name, value } = e.target;
+            setForm((prevForm) => ({
+                ...prevForm,
+                [name]: value,  // Cập nhật các trường input thông thường
+            }));
+        }
     };
     const handleChangeFile = (event) => {
         const selectedFile = event.target.files?.[0];
@@ -80,7 +90,27 @@ export const EventAdd = () => {
             });
         }
     };
-
+    const formats = [
+        "header", 
+        "bold", 
+        "italic", 
+        "underline", 
+        "size",  // Thêm 'size' vào formats
+        "list", 
+        "bullet", 
+        "link", 
+        "image"
+      ];
+    
+      const modules = {
+        toolbar: [
+          [{ header: [1, 2, false] }],
+          ["bold", "italic", "underline"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["link", "image"],
+          [{ "size": ["small", "medium", "large", "huge"] }] // Thêm dropdown chọn kích thước chữ
+        ],
+      };
     const validateForm = () => {
         let errors = {};
         let isValid = true;
@@ -99,6 +129,10 @@ export const EventAdd = () => {
         setErrors(errors);
         return isValid;
     };
+    const convertToHTML = (text) => {
+        return text.split("\n").join("<br/>"); // Thay thế mỗi dấu xuống dòng bằng <br/>
+    };
+
     useEffect(() => {
         validateForm();
     }, [form]);
@@ -192,31 +226,25 @@ export const EventAdd = () => {
                         onChange={handleOnChangeForm}
                     />
                     <br />
-                    <Textarea
-                        placeholder="Content"
-                        name="content"
+                
+                    <ReactQuill
                         value={form.content}
-                        onChange={handleOnChangeForm}
+                     name="content"
+                     onChange={handleOnChangeForm}
+                        placeholder="Type something..."
+                        style={{
+                            height: "100%", // Chiều cao toàn bộ trình soạn thảo
+                            maxHeight: "100%", // Giới hạn chiều cao nếu nội dung dài
+                           // Thêm thanh cuộn dọc
+                            width: "100%", // Chiều rộng tự động theo container
+                            border: "1px solid #ccc", // Đường viền tùy chỉnh
+                            borderRadius: "8px", // Bo góc
+                        }}
+                        modules={modules}
+                        formats={formats}
                     />
                 </Stack>
                 <br />
-
-                {/* <RichTextEditorComponent
-                    value={form.content}
-                    onChange={handleOnChangeForm}
-                >
-                    <EditorData />
-                    <Inject
-                        services={[
-                            HtmlEditor,
-                            Toolbar,
-                            Image,
-                            Link,
-                            QuickToolbar,
-                        ]}
-                    />
-                </RichTextEditorComponent> */}
-
                 <br />
 
                 <div className="mt-24">

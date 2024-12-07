@@ -187,6 +187,25 @@ const updateRoom = async (form, token) => {
     }
 };
 
+const deleteRoom = async (token,id) => {
+    try {
+        let config = { headers: { Authorization: `Bearer ${token}` } };
+        const res = await axios.delete(`${API_URL}/interview/${id}`, config);
+        return res.data;
+    } catch (error) {
+        const axiosError = error;
+        if (
+            axiosError &&
+            axiosError.response &&
+            axiosError.response.status === 403
+        ) {
+            throw new Error("no_permistion");
+        } else {
+            throw error;
+        }
+    }
+};
+
 export const interviewService = {
     getAllRooms,
     getCandidatesByJob,
@@ -196,4 +215,5 @@ export const interviewService = {
     sendCalendar,
     updateRoom,
     candidateAssign,
+    deleteRoom,
 };

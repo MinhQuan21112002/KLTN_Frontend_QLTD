@@ -110,6 +110,19 @@ export const RoomEditInfomation = () => {
     })
   }
 
+  
+  const handleDeleteRoom = (id) => {
+    interviewService.deleteRoom(accessToken,id).then((res) => {
+      if (res.message === 'SUCCESS!!') {
+        toast.success("Delete " +res.message)
+        setTimeout(() => {
+          navigate('/roomList');
+        }, 3000); // 3000ms = 3s
+      } else {
+        toast.error(res.message)
+      }
+    })
+  }
   if (room.id === 0) {
     return (
       <>
@@ -311,6 +324,9 @@ export const RoomEditInfomation = () => {
                 </Button>
                 <Button w={40} colorScheme='teal' size='lg' onClick={handleUpdateRoom}>
                   Save
+                </Button>
+                <Button onClick={() => handleDeleteRoom(params.idRoom)} w={40} colorScheme='red' size='lg'>
+                  Delete
                 </Button>
               </HStack>
             </Box>

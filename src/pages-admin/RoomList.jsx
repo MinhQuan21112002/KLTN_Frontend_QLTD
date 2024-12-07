@@ -71,9 +71,11 @@ const RoomList = () => {
     return formattedEndDate
   }
   const roomList = useSelector((store) => store.room.data)
-  const roomdatas = roomList.map((job) => {
+  const filteredRoomdatas = roomList
+  .filter((job) => job.status === 'Created')  // Lọc các job có status là 'disable'
+  .map((job) => {
     return (
-      <Link to={`/addCandidate/${job.jobPostId}/${job.id}`}>
+      <Link to={`/addCandidate/${job.jobPostId}/${job.id}`} key={job.id}>
         <HStack
           fontFamily={'Montserrat'}
           fontWeight={400}
@@ -85,7 +87,6 @@ const RoomList = () => {
           <Box
             borderRadius={20}
             h='100%'
-            key={job.id}
             w='100%'
             boxShadow='rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px'
             p='20px 20px 0 20px'>
@@ -122,18 +123,17 @@ const RoomList = () => {
             <Button ml={2} color={'white'} backgroundColor={'green'}>
               {job.status}
             </Button>
-            {/* <Button data-value={job.id}>delete</Button> */}
 
             <Flex style={{ marginTop: '40px' }}>
               <Box display='flex' mr='50px'></Box>
-              {/* <Button >  <Link to={`/addCandidate/${job.jobPostId}/${job.id}`}>Thêm</Link> </Button> */}
             </Flex>
             <ToastContainer />
           </Box>
         </HStack>
       </Link>
-    )
-  })
+    );
+  });
+
 
   return (
     <>
@@ -146,7 +146,7 @@ const RoomList = () => {
       </Box>
       <Box display='flex' justifyContent='space-between' backgroundColor='#e9f3f5'>
         <Box justifyContent='space-between' ml='10%' width='90%' mr={'10%'}>
-          {roomdatas}
+          {filteredRoomdatas}
         </Box>
       </Box>
     </>

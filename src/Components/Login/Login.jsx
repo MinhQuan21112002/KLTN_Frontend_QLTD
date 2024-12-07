@@ -100,7 +100,7 @@ const Login = () => {
         localStorage.setItem("data", JSON.stringify(data));
         localStorage.setItem("avatar", JSON.stringify(data.data.userInfo.avatar));
         console.log(data.access_token);
-        navigate(`/`);
+        window.location.replace(`${webHost}`);
         
       } else if (data.message === "Your account is not activate!!!") {
         toast.error(data.message, { position: "top-center" });

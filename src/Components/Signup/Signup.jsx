@@ -13,7 +13,7 @@ import jwtDecode from "jwt-decode";
 import Cookies from "universal-cookie";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../../firebase";
-
+import googleLogo from "./google.png";
 const cookies = new Cookies();
 
 const Signup = () => {
@@ -59,6 +59,43 @@ const Signup = () => {
     }
   };
 
+  const handleSubmitReccer = async (e) => {
+    e.preventDefault();
+    if (!username) {
+      toast.warning('Name is required!', { position: 'top-center' });
+    } else if (!email) {
+      toast.error('Email is required!', { position: 'top-center' });
+    } else if (!email.includes('@')) {
+      toast.warning('Include "@" in your email!', { position: 'top-center' });
+    } else if (!password) {
+      toast.error('Password is required!', { position: 'top-center' });
+    } else if (password.length < 6) {
+      toast.error('Password must be at least 6 characters!', { position: 'top-center' });
+    } else if (!confirmpassword) {
+      toast.error('Confirm password is required!', { position: 'top-center' });
+    } else if (password !== confirmpassword) {
+      toast.error('Passwords do not match!', { position: 'top-center' });
+    } else {
+      try {
+        const config = { headers: { 'Content-type': 'application/json' } };
+        setLoading(true);
+
+        const { data } = await axios.post(`${hostName}/auth/register-reccer`, { username, email, password }, config);
+        if(data.data!=null)
+        {
+          toast.success("Tạo tài khoản Reccer thành công", { position: 'top-center' });
+        setTimeout(() => navigate(`/verify/${email}`), 2000);
+        }
+        else{
+          toast.error(data.message, { position: 'top-center' });
+        }
+      } catch (error) {
+        const errorMessage = error.response?.data?.message || 'Registration failed';
+        toast.error(errorMessage, { position: 'top-center' });
+        setLoading(false);
+      }
+    }
+  };
   const signInWithGoogle = async () => {
     try {
       const provider = new GoogleAuthProvider();
@@ -104,6 +141,7 @@ const Signup = () => {
             </div>
             <div className='form_input'>
               <label htmlFor='email'>Email</label>
+              <br></br>
               <input type='email' value={email} onChange={(e) => setEmail(e.target.value)} name='email' id='email' placeholder='Enter Your Email' />
             </div>
             <div className='form_input'>
@@ -125,10 +163,50 @@ const Signup = () => {
               </div>
             </div>
 
-            <button type='button' onClick={signInWithGoogle}>Sign In With Google</button>
             <Button color={'white'} mb={10} backgroundColor={'#87b2c4'} onClick={handleSubmit}>
               Register Now
             </Button>
+            <Button color={'white'} ml={20} mb={10} backgroundColor={'#87b2c4'} onClick={handleSubmitReccer}>
+              Register for Reccer
+            </Button>
+          
+            <button type='button'
+            className="google-signin-btn"
+            onClick={signInWithGoogle}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "10px",
+              backgroundColor: "white",
+              color: "#757575",
+              fontSize: "16px",
+              fontWeight: "bold",
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+              padding: "10px 20px",
+              cursor: "pointer",
+              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+              transition: "box-shadow 0.2s ease, background-color 0.2s ease",
+              marginBottom:"1%",
+              marginTop:"1%",
+            }}
+          >
+      <img
+        src={googleLogo}
+        alt="Google Logo"
+        style={{
+          width: "24px",
+          height: "24px",
+          marginRight: "10px",
+        }}
+      />
+      Sign Up With Google
+    </button>
+
+
+    
+           
           </form>
           <ToastContainer />
         </Box>
