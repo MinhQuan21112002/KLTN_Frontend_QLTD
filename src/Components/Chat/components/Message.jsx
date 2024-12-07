@@ -28,6 +28,7 @@ import {
 
 import { MessageInput } from '@chatscope/chat-ui-kit-react';
 import Cookies from "universal-cookie";
+import { Avatar } from "@chakra-ui/react";
 const cookies = new Cookies();
 export const Message = ({ room, onRoomChange }) => {
   const [rooms, setRooms] = useState([]);
@@ -37,7 +38,7 @@ export const Message = ({ room, onRoomChange }) => {
   const currentUser = auth.currentUser?.displayName || "Anonymous";
   const [username, setUsername] = useState(cookies.get("username"));
   const [usernameGG, setusernameGG] = useState(cookies.get("userNameGG"));
- 
+  const avatar = JSON.parse(localStorage.getItem("avatar"));
   useEffect(() => {
     const queryRooms = query(messagesRef, orderBy("room"), orderBy("createdAt"));
     const unsubscribe = onSnapshot(queryRooms, (snapshot) => {
@@ -133,12 +134,8 @@ export const Message = ({ room, onRoomChange }) => {
                       onClick={() => handleRoomChange(roomName)} // Thay đổi room khi click
                     >
                       <div className="d-flex flex-row">
-                        <img
-                          src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-8.webp"
-                          alt="avatar"
-                          className="rounded-circle d-flex align-self-center me-3 shadow-1-strong"
-                          width="60"
-                        />
+                    
+                         <Avatar className="rounded-circle d-flex align-self-center me-3 shadow-1-strong" size='lg' name={roomName.room ? roomName.room : roomName.user}  />
                         <div className="pt-1">
                           <p className="fw-bold mb-0">{roomName.room}</p>
                           {roomName.isRead === false && (
@@ -187,12 +184,10 @@ export const Message = ({ room, onRoomChange }) => {
                       <p className="mb-0">{message.text}</p>
                     </MDBCardBody>
                   </MDBCard>
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-                    alt="avatar"
-                    className={`rounded-circle d-flex align-self-start shadow-1-strong ${(message.user === username||message.user === usernameGG) ? "me-3" : "ms-3"}`}
-                    width="60"
-                  />
+            
+                    <Avatar className={`rounded-circle d-flex align-self-start shadow-1-strong ${(message.user === username||message.user === usernameGG) ? "me-3" : "ms-3"}`}
+                    size='lg' name={message.room ? message.room : message.user}  src={avatar}/>
+                       
                 </div>
                 </>
                 :
@@ -210,12 +205,9 @@ export const Message = ({ room, onRoomChange }) => {
                       <p className="mb-0">{message.text}</p>
                     </MDBCardBody>
                   </MDBCard>
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-                    alt="avatar"
-                    className={`rounded-circle d-flex align-self-start shadow-1-strong ${(message.user === username||message.user === usernameGG) ? "me-3" : "ms-3"}`}
-                    width="60"
-                  />
+                  <Avatar className={`rounded-circle d-flex align-self-start shadow-1-strong ${(message.user === username||message.user === usernameGG) ? "me-3" : "ms-3"}`}
+                    size='lg' name={message.room ? message.room : message.user}  />
+                     
                 </div>
                 </>
                 }
