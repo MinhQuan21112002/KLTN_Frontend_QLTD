@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Cài đặt các dependencies với --legacy-peer-deps
-RUN npm install --force
+RUN npm install --legacy-peer-deps
 
 
 # Sao chép toàn bộ mã nguồn vào container
