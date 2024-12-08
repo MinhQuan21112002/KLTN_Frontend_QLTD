@@ -3,7 +3,6 @@ import { Badge, Box, Button, Card, CardBody, Flex, Heading, HStack, IconButton, 
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
-import { hostName, webHost } from '../../global'
 
 export const EventCard = ({ id, title, article, time, author, image, content, status }) => {
   const navigate = useNavigate()
@@ -11,7 +10,7 @@ export const EventCard = ({ id, title, article, time, author, image, content, st
     imageUrl: 'https://bit.ly/2Z4KKcF',
   }
   const copyToClipboard = (e) => {
-    const textToCopy = `${webHost}/event/${e.target.value}`
+    const textToCopy = `http://localhost:3000/event/${e.target.value}`
     navigator.clipboard
       .writeText(textToCopy)
       .then(() => {
