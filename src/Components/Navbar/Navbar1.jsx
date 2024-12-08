@@ -118,6 +118,22 @@ const Navbar1 = () => {
               </MenuButton>
             </Menu>
           </Box>
+          <Box h={'100%'} display={'flex'} w={'auto'} alignItems={'center'} justifyContent={'center'} fontWeight={'500'} lineHeight={'20px'} color={'#445578'} cursor={'pointer'}>
+            <Menu isOpen={services.isOpen}>
+              <MenuButton
+                onClick={() => navigate('/news')}
+                _hover={{
+                  background: 'white',
+                  border: 'none',
+                }}
+                border={'none'}
+                bgColor={'white'}
+                as={Button}
+                color={'#445578'}>
+                News
+              </MenuButton>
+            </Menu>
+          </Box>
           {/*  */}
 
           {/* <Box h={'100%'} display={'flex'} w={'33.3%'} alignItems={'center'} justifyContent={'center'} fontWeight={'500'} lineHeight={'20px'} color={'#445578'} cursor={'pointer'}>
