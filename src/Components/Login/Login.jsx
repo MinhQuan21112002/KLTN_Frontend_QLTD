@@ -79,41 +79,41 @@ const Login = () => {
   };
 
 
-  const signInWithGoogle = async () => {
-    try {
-      const config = { headers: { "Content-type": "application/json" } };
-      const result = await signInWithPopup(auth, provider);
-      const googleEmail = result.user.email;
-      const googlePassword = result.user.uid;
-      const username = result.user.displayName;
-      const image =result.user.photoURL;
-      cookies.set("auth-token", result.user.refreshToken);
-      cookies.set("roommail", googleEmail);
-      cookies.set("username", username);
-      console.log(result);
-     
-      setLoading(true);
-      const { data } = await axios.post(`${hostName}/auth/login`, { email: googleEmail, password: googlePassword });
+    const signInWithGoogle = async () => {
+      try {
+        const config = { headers: { "Content-type": "application/json" } };
+        const result = await signInWithPopup(auth, provider);
+        const googleEmail = result.user.email;
+        const googlePassword = result.user.uid;
+        const username = result.user.displayName;
+        const image =result.user.photoURL;
+        cookies.set("auth-token", result.user.refreshToken);
+        cookies.set("roommail", googleEmail);
+        cookies.set("username", username);
+        console.log(result);
+      
+        setLoading(true);
+        const { data } = await axios.post(`${hostName}/auth/login`, { email: googleEmail, password: googlePassword });
 
-      if (data.data) {
-        toast.success("Google login successful!", { position: "top-center" });
-        localStorage.setItem("data", JSON.stringify(data));
-        localStorage.setItem("avatar", JSON.stringify(data.data.userInfo.avatar));
-        console.log(data.access_token);
-        window.location.replace(`${webHost}`);
-        
-      } else if (data.message === "Your account is not activate!!!") {
-        toast.error(data.message, { position: "top-center" });
-        await axios.post(`${hostName}/auth/send-otp`, googleEmail , config);
-        setTimeout(() => navigate(`/verify/${googleEmail}`), 2000);
-      } else {
-        toast.error(data.message, { position: "top-center" });
+        if (data.data) {
+          toast.success("Google login successful!", { position: "top-center" });
+          localStorage.setItem("data", JSON.stringify(data));
+          localStorage.setItem("avatar", JSON.stringify(data.data.userInfo.avatar));
+          console.log(data.access_token);
+          window.location.replace(`${webHost}`);
+          
+        } else if (data.message === "Your account is not activate!!!") {
+          toast.error(data.message, { position: "top-center" });
+          await axios.post(`${hostName}/auth/send-otp`, googleEmail , config);
+          setTimeout(() => navigate(`/verify/${googleEmail}`), 2000);
+        } else {
+          toast.error(data.message, { position: "top-center" });
+        }
+    
+      } catch (error) {
+        toast.error("Firebase login failed!", { position: "top-center" });
       }
-   
-    } catch (error) {
-      toast.error("Firebase login failed!", { position: "top-center" });
-    }
-  };
+    };
 
   return (
     <section className="login_section">

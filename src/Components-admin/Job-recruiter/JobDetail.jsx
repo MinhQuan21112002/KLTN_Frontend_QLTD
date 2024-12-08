@@ -1,4 +1,4 @@
-import { Box, Button, Image, Text, Badge, Select, Input, Textarea } from '@chakra-ui/react'
+import { Box, Button, Image, Text, Badge, Select, Input, Textarea, Avatar, HStack, VStack } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
@@ -21,6 +21,12 @@ function JobDetailRecruiter() {
     dispatch(loadJobDetail(params.id))
   }, [params.id])
   const data = useSelector((store) => store.jobDetail.data)
+
+  const hrs = [];
+ const listCandidate=data.listCandidate
+  if (listCandidate) { // Kiểm tra nếu listCandidate không phải null
+    hrs.push(...listCandidate); // Thêm tất cả các phần tử của listCandidate vào mảng hrs
+  } 
 
   const accessToken = JSON.parse(localStorage.getItem('data')).access_token
   const [name, setName] = useState(data.name)
@@ -141,8 +147,8 @@ function JobDetailRecruiter() {
   if (data != null)
     return (
       <Box fontFamily={'Montserrat'} fontWeight={400}>
-        <Box display='flex' justifyContent='space-evenly'>
-          <Box w='950px'>
+        <Box display='flex' justifyContent='space-evenly' mb='10'>
+          <Box w='60%'>
             <Box
               borderRadius={20}
               mt='30px'
@@ -541,6 +547,42 @@ function JobDetailRecruiter() {
             </Box>
           </Box>
         </Box>
+
+
+
+        <Box fontFamily={'Montserrat'}  boxShadow='rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em'
+              borderRadius={20} w='60%'  mx='auto'  fontWeight={400} backgroundColor={'#e9f3f5'} p={30} overflow='hidden'>
+        <VStack >
+          <Text fontWeight='black' w='50%'>
+            Danh sách Ứng viên đã Apply
+          </Text>
+          <Box w='50%' backgroundColor='#ffffff' p='2%' borderRadius={20}>
+            <VStack w='100%'>
+              {hrs.map((hr) => (
+                <Box p={2} borderRadius={20} w='100%' transition='transform 0.3s ease-in-out' _hover={{ borderWidth: '2px', transform: 'scale(1.006)' }}>
+                  <HStack justifyContent={'space-between'}>
+                    <HStack spacing={5}>
+                      <Avatar size='xl' name={hr.fullName ? hr.fullName : hr.email} src={hr.avatar} />
+                      <VStack>
+                        <Text w='100%' fontWeight={'black'}>
+                          Full Name: {hr.fullName}
+                        </Text>
+                        <Text w='100%'>Email: {hr.email}</Text>
+                      </VStack>
+                    </HStack>
+
+                      <Button color={'white'} backgroundColor={'#30f0b6'}>
+                        Đã ứng tuyển
+                      </Button>
+                   
+                  </HStack>
+                </Box>
+              ))}
+            </VStack>
+          </Box>
+          {/* <ToastContainer position='bottom-right' autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme='light' /> */}
+        </VStack>
+      </Box>
         <ToastContainer />
       </Box>
     )

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Badge, Box, Button, Center, Image, Spinner, Text } from '@chakra-ui/react'
+import { Badge, Box, Button, Center, FormLabel, Image, Spinner, Text } from '@chakra-ui/react'
 import axios from 'axios'
 import './Both.css'
 import { ToastContainer, toast } from 'react-toastify'
@@ -13,6 +13,9 @@ import { IoEyeOffOutline } from 'react-icons/io5'
 import { storage } from '../../firebase'
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Cookies from "universal-cookie";
+import { loadJob } from '../../redux/Job-posting/Action'
+import { ItemJobInCompany } from '../Companies/ItemJobInCompany'
+import { ItemJob } from './ItemJob'
 
 const cookies = new Cookies();
 const UserInfo = () => {
@@ -22,9 +25,13 @@ const UserInfo = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(loadUserInfo())
+    dispatch(loadJob())
   }, [])
-  const user = useSelector((store) => store.userInfo.data)
 
+
+  const user = useSelector((store) => store.userInfo.data)
+  const listJob=user.listJobPosting;
+  console.log(user.listJobPosting)
   const accessToken = JSON.parse(localStorage.getItem('data')).access_token
 
   const [passShow, setPassShow] = useState(false)
@@ -460,7 +467,7 @@ const UserInfo = () => {
           </Box>
       {isAuthenticated==null?
          ( 
-         <Box mb={40} p={10} h={'auto'} className='form_data3'>
+         <Box mb={20} p={10} h={'auto'} className='form_data3'>
             <Box mt={10} fontSize={25} className='form_heading'>
               Thay đổi mật khẩu
             </Box>
@@ -527,6 +534,18 @@ const UserInfo = () => {
          ):
          <></>
         }
+
+          <Box w={'100%'} borderWidth='1px' borderRadius='lg' overflow='hidden' boxShadow='md' align={'flex-start'} marginBottom={"10%"}>
+                  <FormLabel fontWeight={'bold'} fontSize={18} w={'100%'} p={4}>
+                  Công việc đã ứng tuyển
+                  </FormLabel>
+                  {listJob
+                    .filter((job) => job.status === true) // Lọc các job có status là false
+                    .map((job) => (
+                      <ItemJob key={job.id} {...job} /> // Hiển thị các job đã lọc
+                    ))}
+
+          </Box>
         </Box>
       </Box>
     )
