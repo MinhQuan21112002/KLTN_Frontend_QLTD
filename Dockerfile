@@ -16,7 +16,7 @@ COPY . .
 
 
 # Expose cổng 80 để Nginx hoạt động
-EXPOSE 5173
+EXPOSE 80
 
 # Khởi chạy Nginx
 CMD ["npm", "start"]
