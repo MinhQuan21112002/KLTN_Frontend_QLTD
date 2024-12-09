@@ -210,6 +210,9 @@ const UserInfo = () => {
         .request(config)
         .then((response) => {
           console.log('haha')
+          toast.success('Update Info Successfuly', {
+            position: 'top-center',
+          })
         })
         .catch((error) => {
           console.log(error)
