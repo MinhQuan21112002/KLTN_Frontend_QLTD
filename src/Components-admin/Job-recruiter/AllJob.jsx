@@ -18,8 +18,6 @@ const AllJob = () => {
     e.preventDefault()
     const id = e.currentTarget.getAttribute('data-value')
 
-    console.log('bam dung r', accessToken)
-
     try {
       let data = ''
       let config = {
@@ -56,7 +54,11 @@ const AllJob = () => {
   }, [])
   const userId = JSON.parse(localStorage.getItem('data')).data.userInfo.id
   const jobData = useSelector((store) => store.job.data)
- 
+  if (jobData && typeof jobData === "object") {
+    for (const key in jobData) {
+        console.log(`${key}:`, jobData[key]);
+    }
+}
   const jobdatas = jobData && jobData.length > 0 ? jobData.map((job) => {
     return job.status === true && job.user_id === userId ? (
       <Box borderRadius={20} key={job.id} mt='50px' boxShadow='rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px' mb='30px' p='20px'>

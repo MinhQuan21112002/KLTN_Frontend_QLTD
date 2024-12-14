@@ -23,12 +23,14 @@ import { useStateContext } from '../contexts/ContextProvider'
 import product9 from '../data/product9.jpg'
 import { loadJob } from '../redux/Job-posting/Action'
 import { cvService } from '../Service/cv.service'
-
+import { companyService } from '../Service/company.service'
 
 const Ecommerce = () => {
+  const data=JSON.parse(localStorage.getItem("data"));
   const { currentColor, currentMode } = useStateContext()
   const [cvChartData, setCvChartData] = useState([])
   const [jobChartData, setJobChartData] = useState([])
+   const [candidate, setCandidate] = useState([])
   const accessToken = JSON.parse(localStorage.getItem('data')).access_token
 
   useEffect(() => {
@@ -67,6 +69,10 @@ const Ecommerce = () => {
       setCvChartData(cvCountsData)
     })
 
+    companyService.getListCandidate(accessToken).then((res) => {
+      console.log("Danh sách candidate:", res); // In toàn bộ mảng
+        setCandidate(res)
+    })
 
     const m = Array.from({ length: 12 }, (_, index) => ({
       month: index,
@@ -88,6 +94,8 @@ const Ecommerce = () => {
   return (
     <div style={{ fontFamily: 'Montserrat' }} className='mt-24'>
       <div className='flex flex-wrap lg:flex-nowrap justify-center '>
+
+      {data.data.role!='ADMIN'&&(        
         <div className='bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-44 rounded-xl w-full lg:w-80 p-8 pt-9 m-3 bg-hero-pattern bg-no-repeat bg-cover bg-center'>
           <div className='flex justify-between items-center'>
             <div>
@@ -109,6 +117,9 @@ const Ecommerce = () => {
             </Button>
           </div>
         </div>
+      )}
+      
+      {data.data.role!='ADMIN'&&(
         <div className='flex m-3 flex-wrap justify-center gap-1 items-center'>
           <div
             key='Người phỏng vấn'
@@ -138,13 +149,15 @@ const Ecommerce = () => {
             </button>
             <p className='mt-3'>
               <span className='text-lg font-semibold'>
-              {interviewerList ? `${interviewerList.length} ` : "0"}
+              {candidate ? `${candidate.length} ` : "0"}
                 {/* {interviewerList.length}  */}
                 người </span>
             </p>
             <p className='text-sm text-gray-400  mt-1'>Ứng viên</p>
           </div>
         </div>
+        )}
+
       </div>
 
       <div className='flex gap-10 flex-wrap justify-center'>
