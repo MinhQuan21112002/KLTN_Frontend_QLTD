@@ -19,33 +19,12 @@ function App() {
   const data=JSON.parse(localStorage.getItem("data"));
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isChatOpen2, setIsChatOpen2] = useState(false);
-  const [gptFirst, setGptFirst] = useState(false);
-  const [chatApp, setChatApp] = useState(false);
-  const isAuthenticated = !!cookies.get("auth-token");
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
-    if(isChatOpen)
-    { 
-      if(isChatOpen2==false)
-      { 
-        setGptFirst(true);
-        setChatApp(false);
-      }
-      
-    }
-
   };  
   const toggleChat2 = () => {
     setIsChatOpen2(!isChatOpen2);
-    if(isChatOpen2)
-    { 
-      if(isChatOpen==false)
-      {   
-        setChatApp(true);
-        setGptFirst(false);
-      }
-      
-    }
+   
   };  
   const {
     setCurrentColor,
@@ -107,7 +86,7 @@ function App() {
 
   {/* ChatGPT Popup */}
   {isChatOpen  &&(
-    <div className={`chat-popup ${gptFirst ? "" : "adjust-right"}`}>
+    <div className="chat-popup">
       <button className="chat-close-btn" onClick={toggleChat}>
         ✖
       </button>
@@ -129,37 +108,40 @@ function App() {
           <Footer />
 
            {/* Chat Button for ChatGPT */}
-  <div className="chat-button" onClick={toggleChat}>
-  </div>
-
+           <div className="chat-buttons-container">
+                <div className="chat-button" onClick={toggleChat}>
+                </div>
+                {data != null && (
+                  <div className="chat-button2" onClick={toggleChat2}>
+                    💬
+                  </div>
+              )}
+            </div>
   {/* ChatGPT Popup */}
-  {isChatOpen  &&(
-    <div className={`chat-popup ${gptFirst ? "" : "adjust-right"}`}>
-      <button className="chat-close-btn" onClick={toggleChat}>
-        ✖
-      </button>
-      <ChatGPT />
-    </div>
-  )}
+  {isChatOpen && (
+  <div
+    className={`chat-popup ${isChatOpen2 ? "adjust-left" : ""}`}
+  >
+    <button className="chat-close-btn" onClick={toggleChat}>
+      ✖
+    </button>
+    <ChatGPT />
+  </div>
+)}
 
-  {/* Chat Button for ChatApp */}
-  {data!=null && (
-    <>
-      <div className="chat-button2" onClick={toggleChat2}>
-        💬
-      </div>
-      {isChatOpen2 && (
-        <div className={`chat-popup2 ${chatApp ? "" : "adjust-right"}`}>
-          <button className="chat-close-btn2" onClick={toggleChat2}>
-            ✖
-          </button>
-          <div className="chat-content">
-            <ChatApp />
-          </div>
+
+ {isChatOpen2 && (
+      <div
+        className="chat-popup2"
+      >
+        <button className="chat-close-btn2" onClick={toggleChat2}>
+          ✖
+        </button>
+        <div className="chat-content">
+          <ChatApp />
         </div>
-      )}
-    </>
-  )}
+      </div>
+    )}
         </div>
       </Provider>
     </BrowserRouter>

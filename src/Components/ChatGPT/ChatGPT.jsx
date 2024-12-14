@@ -84,7 +84,7 @@ function ChatGPT() {
   }
 
   return (
-    <div className="ChatGpt" style={{ marginLeft: "50px", marginTop: "50px" }}>
+    <div className="ChatGpt" style={{ marginTop: "50px" }}>
       <div style={{ position: "relative", height: "600px", width: "700px" }}>
         <MainContainer>
           <ChatContainer>

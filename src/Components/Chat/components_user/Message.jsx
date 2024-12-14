@@ -22,8 +22,10 @@ import {
   MDBTextArea,
   MDBCardHeader,
 } from "mdb-react-ui-kit";
-import { MessageInput } from '@chatscope/chat-ui-kit-react';
+import { Avatar, MessageInput } from '@chatscope/chat-ui-kit-react';
 import Cookies from "universal-cookie";
+import adminImg from './admin.png';
+
 const cookies = new Cookies();
 export const Message = ({ room, onRoomChange }) => {
   const [rooms, setRooms] = useState([]);
@@ -33,7 +35,7 @@ export const Message = ({ room, onRoomChange }) => {
   const currentUser = auth.currentUser?.displayName || "Anonymous";
   const [username, setUsername] = useState(cookies.get("username"));
   const [usernameGG, setusernameGG] = useState(cookies.get("userNameGG"));
- 
+  const avatar = JSON.parse(localStorage.getItem("avatar"));
   useEffect(() => {
     const queryRooms = query(messagesRef, orderBy("room"), orderBy("createdAt"));
     const unsubscribe = onSnapshot(queryRooms, (snapshot) => {
@@ -112,12 +114,9 @@ export const Message = ({ room, onRoomChange }) => {
                       <p className="mb-0">{message.text}</p>
                     </MDBCardBody>
                   </MDBCard>
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-                    alt="avatar"
-                    className={`rounded-circle d-flex align-self-start shadow-1-strong ${(message.user === username||message.user === usernameGG) ? "me-3" : "ms-3"}`}
-                    width="60"
-                  />
+                  <Avatar className={`rounded-circle d-flex align-self-start shadow-1-strong ${(message.user === username||message.user === usernameGG) ? "me-3" : "ms-3"}`}
+                    size='lg' name={message.room ? message.room : message.user}  src={avatar}/>
+                       
                 </div>
                 </>
                 :
@@ -125,7 +124,7 @@ export const Message = ({ room, onRoomChange }) => {
                  <div className="message-left-container">
                   <MDBCard className={(message.user === username||message.user === usernameGG) ? "message-right" : "message-left"}>
                     <MDBCardHeader className="d-flex justify-content-between p-3">
-                      <p className="fw-bold mb-0">{message.user}</p>
+                      <p className="fw-bold mb-0">ADMIN</p>
                       <p className="text-muted small mb-0">
                         <MDBIcon far icon="clock" />{" "}
                         {message.createdAt?.toDate().toLocaleString()}
@@ -135,12 +134,9 @@ export const Message = ({ room, onRoomChange }) => {
                       <p className="mb-0">{message.text}</p>
                     </MDBCardBody>
                   </MDBCard>
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-                    alt="avatar"
-                    className={`rounded-circle d-flex align-self-start shadow-1-strong ${(message.user === username||message.user === usernameGG)? "me-3" : "ms-3"}`}
-                    width="60"
-                  />
+                  <Avatar className={`rounded-circle d-flex align-self-start shadow-1-strong ${(message.user === username||message.user === usernameGG) ? "me-3" : "ms-3"}`}
+                    size='lg' name={message.room ? message.room : message.user} src={adminImg} />
+                     
                 </div>
                 </>
                 }

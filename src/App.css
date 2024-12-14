@@ -3,27 +3,38 @@
 @import url('https://fonts.gstatic.com');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap');
 
-/* Chat Button for ChatGPT */
-.chat-button {
+.chat-popup.adjust-left {
+  right: 750px; /* Điều chỉnh khoảng cách khi ChatApp cũng mở */
+}
+
+.chat-popup2.adjust-left {
+  right: 750px; /* Điều chỉnh khoảng cách khi ChatGPT cũng mở */
+}
+
+.chat-buttons-container {
   position: fixed;
   bottom: 20px;
   right: 20px;
+  display: flex;
+  gap: 30px; /* Khoảng cách giữa hai nút */
+  z-index: 1000;
+}
+
+/* Chat Button for ChatGPT */
+.chat-button {
   width: 60px;
   height: 60px;
   background-color: #ffffff;
   background-image: url('/src/Components/ChatGPT/chatgpt.png');
-  background-size: contain; /* Đảm bảo hình ảnh vừa với kích thước nút */
+  background-size: contain;
   background-repeat: no-repeat;
-  color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
-  cursor: pointer;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  border: 3px solid #000000; /* Thêm viền màu */
+  border: 3px solid #000000;
+  cursor: pointer;
 }
 
 /* ChatGPT Popup */
@@ -31,9 +42,9 @@
   position: fixed;
   bottom: 100px;
   right: 20px;
-  width: 750px;
-  height: 700px;
-  background: white;
+  width: 700px;
+  height: 650px;
+  background: #61dafbaa;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
@@ -51,33 +62,26 @@
   cursor: pointer;
 }
 
-/* Chat Button for ChatApp */
 .chat-button2 {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
+  font-size: 30px;
   width: 60px;
   height: 60px;
   background-color: #ffd900;
-  color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
-  cursor: pointer;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  margin-bottom: 7%;
+  border: 3px solid #000000;
+  cursor: pointer;
 }
-
 /* ChatApp Popup */
 .chat-popup2 {
   position: fixed;
   bottom: 100px;
   right: 20px;
   width: 650px;
-  height: 900px;
+  height: 800px;
   background: white;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
