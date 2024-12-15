@@ -10,7 +10,6 @@ import axios from "axios";
 export const loadUserInfo=(id)=>async (dispatch)=>{
 
     const accessToken= JSON.parse(localStorage.getItem("data")).access_token;
-    console.log(accessToken)
     dispatch({type:USER_INFO_REQUERST});
        
         try {

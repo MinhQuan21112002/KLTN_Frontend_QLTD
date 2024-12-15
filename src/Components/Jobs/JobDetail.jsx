@@ -30,10 +30,36 @@ import { IoMedalOutline } from 'react-icons/io5'
 import { AiOutlineUser, AiOutlineUsergroupAdd } from 'react-icons/ai'
 import { companyService } from '../../Service/company.service'
 import { loadUserInfo } from '../../redux/UserInfo/Action'
-
+import { db } from '../../firebase'
+import {
+  collection,
+  addDoc,
+  query, where, getDocs,
+  Timestamp,
+} from "firebase/firestore";
 function JobDetail() {
+  const infoAppyRef = collection(db, "applyInfomation_candidate");
+  const params = useParams()
   const navigate = useNavigate()
   const [companies, setCompanies] = useState([])
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(loadJobDetail(params.id))
+    if (accessToken != null) {
+      dispatch(loadUserInfo())
+    }
+  }, [params.id])
+  const data = useSelector((store) => store.jobDetail.data)
+  const company = companies.filter((item) => item.userId === data.user_id)
+  const user = useSelector((store) => store.userInfo.data)
+
+  // if (user) {
+  //   console.log("công việc : " + JSON.stringify(data.image, null, 2));
+  // }
+  // if (user) {
+  //   console.log("nguoi dung : " + JSON.stringify(user.email, null, 2));
+  // }
   useEffect(() => {
     companyService.getAllCompany().then((res) => setCompanies(res))
   }, [])
@@ -67,29 +93,50 @@ function JobDetail() {
           },
         })
 
-        toast.success('Apply Job Successfully', {
-          position: 'top-center',
-        })
+       
       } catch (error) {
         toast.error(error, {
           position: 'top-center',
         })
       }
     }
-  }
-  const params = useParams()
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(loadJobDetail(params.id))
-    if (accessToken != null) {
-      dispatch(loadUserInfo())
+    try {
+      // Tạo truy vấn để kiểm tra trùng lặp
+      const q = query(infoAppyRef, 
+        where("jobId", "==",  params.id),
+        where("candidateId", "==", user.userId)
+      );
+  
+      // Thực hiện truy vấn
+      const querySnapshot = await getDocs(q);
+  
+      if (!querySnapshot.empty) {
+        toast.error("Bạn đã apply rồi ", { position: "top-center" });
+        return; // Dừng nếu đã tồn tại
+      }
+  
+      // Thêm tài liệu mới nếu không tìm thấy trùng lặp
+      await addDoc(infoAppyRef, {
+        reccerId: data.user_id,
+        dateApply: Timestamp.now(),
+        jobId: params.id,
+        candidateId: user.userId,
+        emailCandiate:user.email,
+        nameCandidate:user.fullName,
+        image:data.image,
+      });
+  
+      toast.success('Apply Job Successfully', {
+        position: 'top-center',
+      })
+    } catch (error) {
+      toast.error("Bạn đã apply rồi ", { position: "top-center" });
     }
-  }, [params.id])
-  const data = useSelector((store) => store.jobDetail.data)
-  const company = companies.filter((item) => item.userId === data.user_id)
-  const user = useSelector((store) => store.userInfo.data)
+  }
+  
 
+   
+    
   if (data != null) {
     return (
       <Box mt='100px' fontFamily={'Montserrat'}>

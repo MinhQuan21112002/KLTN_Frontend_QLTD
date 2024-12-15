@@ -9,7 +9,8 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { hostName } from '../../global'
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { storage } from '../../firebase'
+import { storage ,db} from '../../firebase'
+import { collection, query, where, getDocs ,Timestamp} from "firebase/firestore";
 function JobDetailRecruiter() {
   const params = useParams()
   const cancelRef = React.useRef()
@@ -44,6 +45,53 @@ function JobDetailRecruiter() {
   const [testImage, setTestImage] = useState()
   const [status, setStatus] = useState(data.status)
   const [language, setLanguage] = useState(data.language)
+const [notifications, setNotifications] = useState([]);
+  const dataUser=JSON.parse(localStorage.getItem("data"));
+
+
+  // Hàm lấy dữ liệu từ Firestore
+  const fetchNotifications = async () => {
+    try {
+      const infoAppyRef = collection(db, "applyInfomation_candidate"); // Thay đổi thành collection phù hợp
+  
+      // Lấy thời điểm hiện tại và thời điểm 3 ngày trước
+      const now = Timestamp.now();
+      const threeDaysAgo = Timestamp.fromMillis(now.toMillis() - 3 * 24 * 60 * 60 * 1000); // 3 ngày trước
+  
+      // Lọc dữ liệu với reccerId khớp và dateApply từ 3 ngày trước đến hôm nay
+      const q = query(
+        infoAppyRef,
+        where("reccerId", "==", dataUser.data.userInfo.id), // Lọc reccerId khớp
+        where("jobId", "==", params.id), // Lọc reccerId khớp
+      );
+  
+      const querySnapshot = await getDocs(q);
+      const fetchedData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      const filteredData = fetchedData.filter(item => {
+        const applyDate = new Date(item.dateApply.seconds * 1000); // Chuyển đổi dateApply
+        return (
+          applyDate >= threeDaysAgo.toDate() && 
+          applyDate <= now.toDate()
+        );
+      });
+  
+      const candidateIds = filteredData.map((item) => item.candidateId);
+      // Lưu dữ liệu vào state
+      setNotifications(candidateIds);
+    
+    } catch (error) {
+      console.error("Error fetching notifications: ", error);
+    }
+  };
+
+  // Gọi fetchNotifications khi component được mount
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
 
   async function uploadToFirebase(file) {
     if (!file) {
@@ -81,7 +129,6 @@ function JobDetailRecruiter() {
     }
   }
   let img = []
-  console.log(testImage)
   const onOpen = async (e) => {
     if (testImage != null && !window.testImage) {
       const downloadURL = await uploadToFirebase(testImage);
@@ -553,10 +600,10 @@ function JobDetailRecruiter() {
         <Box fontFamily={'Montserrat'}  boxShadow='rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em'
               borderRadius={20} w='60%'  mx='auto'  fontWeight={400} backgroundColor={'#e9f3f5'} p={30} overflow='hidden'>
         <VStack >
-          <Text fontWeight='black' w='50%'>
+          <Text fontWeight='black' w='70%'>
             Danh sách Ứng viên đã Apply
           </Text>
-          <Box w='50%' backgroundColor='#ffffff' p='2%' borderRadius={20}>
+          <Box w='70%' backgroundColor='#ffffff' p='2%' borderRadius={20}>
             <VStack w='100%'>
               {hrs.map((hr) => (
                 <Box p={2} borderRadius={20} w='100%' transition='transform 0.3s ease-in-out' _hover={{ borderWidth: '2px', transform: 'scale(1.006)' }}>
@@ -574,7 +621,15 @@ function JobDetailRecruiter() {
                       <Button color={'white'} backgroundColor={'#30f0b6'}>
                         Đã ứng tuyển
                       </Button>
-                   
+
+                      {notifications.some((id) => id === hr.userId) ? (
+                      <Button color={'white'} backgroundColor={'orange'}>
+                        Mới
+                      </Button>
+                    ) : (
+                      // Nếu không có notification nào liên quan đến hr.userId, nút sẽ không hiển thị.
+                      null
+                    )}
                   </HStack>
                 </Box>
               ))}

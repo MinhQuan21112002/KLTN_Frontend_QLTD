@@ -1,0 +1,22 @@
+@keyframes flicker {
+    0% { 
+      opacity: 0.8; 
+      transform: scale(0.95); 
+      background-color: #fff; /* Màu ban đầu */
+    }
+    50% { 
+      opacity: 1; 
+      transform: scale(1); 
+      background-color: #f0f0f0; /* Màu đổi trong giữa */
+    }
+    100% { 
+      opacity: 0.8; 
+      transform: scale(0.95); 
+      background-color: #fff; /* Màu quay lại như ban đầu */
+    }
+  }
+  
+  .animate-flicker {
+    animation: flicker 1s infinite;
+  }
+  
