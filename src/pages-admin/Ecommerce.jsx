@@ -32,7 +32,7 @@ const Ecommerce = () => {
   const [jobChartData, setJobChartData] = useState([])
    const [candidate, setCandidate] = useState([])
   const accessToken = JSON.parse(localStorage.getItem('data')).access_token
-
+  console.log(data);
   useEffect(() => {
     dispatch(loadJob())
   },[])

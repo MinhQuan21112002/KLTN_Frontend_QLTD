@@ -31,8 +31,13 @@ const JobInterest = () => {
   // Chia danh sách công việc thành các nhóm (8 công việc mỗi slide)
   const slides = []
   for (let i = 0; i < reversedJobList.length; i += 8) {
-    slides.push(reversedJobList.slice(i, i + 8)) // Mỗi slide chứa 8 công việc
+    const filteredJobs = reversedJobList
+      .filter((job) => job.status === true) // Lọc các công việc có status là true
+      .slice(i, i + 8); // Lấy 8 công việc cho mỗi slide
+    
+    slides.push(filteredJobs); // Thêm slide vào danh sách slides
   }
+  
 
   return (
     <>
@@ -44,7 +49,7 @@ const JobInterest = () => {
           navigation={true} // Thêm mũi tên điều hướng
           modules={[Navigation, Autoplay]}
           autoplay={{
-            delay: 3000, // Tự động chuyển slide mỗi 3 giây
+            delay: 2000, // Tự động chuyển slide mỗi 3 giây
             disableOnInteraction: false,
           }}
           loop={true} // Kích hoạt chế độ vòng lặp

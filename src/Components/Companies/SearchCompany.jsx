@@ -31,11 +31,11 @@ export const SearchCompany = ({ keyword, onChange, companies }) => {
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              <VStack maxHeight={'500px'} h={'500px'} overflow={'auto'} p={2}>
+              <VStack maxHeight={'1000px'} h={'1000px'} overflow={'auto'} p={2}>
                 {conpanys.map((company) => (
                   <Box borderWidth={1} borderRadius={5} p={3} w={'100%'} h='200px' mt={3}>
                     <HStack>
-                      <Image borderRadius={4} w={100} h={100} src={company.avatar} />
+                      <Image borderRadius={4} w={300} h={150} src={company.avatar} />
                       <Text>{company.name}</Text>
                     </HStack>
                   </Box>

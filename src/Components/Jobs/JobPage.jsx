@@ -1,142 +1,159 @@
-import { Box, Badge, Image, SimpleGrid, Center, Spinner, VStack, InputGroup, InputLeftElement, Input, Flex, Select, Container, Button } from '@chakra-ui/react'
-import React, { useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
-import { loadJob } from '../../redux/Job-posting/Action'
-import ReactPaginate from 'react-paginate'
+import { Box, Badge, Image, SimpleGrid, Center, Spinner, VStack, InputGroup, InputLeftElement, Input, Flex, Select, Container, Button } from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadJob } from '../../redux/Job-posting/Action';
+import ReactPaginate from 'react-paginate';
 
 const JobPage = () => {
-  const dispatch = useDispatch()
-  const params = useParams()
+  const dispatch = useDispatch();
+  const params = useParams();
   useEffect(() => {
-    dispatch(loadJob())
-  }, [])
-  const navigate = useNavigate()
-  const jobList = useSelector((store) => store.job.data)
-  const [jobFiltered, setFilteredJobList] = useState([])
-
+    dispatch(loadJob());
+  }, []);
+  
+  const navigate = useNavigate();
+  const jobList = useSelector((store) => store.job.data);
+  const [jobFiltered, setFilteredJobList] = useState([]);
   const [search, setSearch] = useState({
     keyword: params.keyword || '',
     location: params.location || 'all',
     experience: params.experience || 'all',
     salary: params.salary || 'all',
-  })
+  });
 
   const handleChangeSearch = (e) => {
-    const { name, value } = e.target
-    setSearch((search) => ({ ...search, [name]: value }))
-  }
+    const { name, value } = e.target;
+    setSearch((search) => ({ ...search, [name]: value }));
+  };
 
   const handleSearch = () => {
-    console.log(search)
     const filteredJobs = jobList.filter((job) => {
-      const keywordMatch = job.name.toLowerCase().includes(search.keyword.toLowerCase())
-      const locationMatch = search.location === 'all' || job.location === search.location
-      const experienceMatch = search.experience === 'all' || job.experience === search.experience
-      const salaryMatch = search.salary === 'all' || job.salary === search.salary
+      const keywordMatch = job.name.toLowerCase().includes(search.keyword.toLowerCase());
+      const locationMatch = search.location === 'all' || job.location === search.location;
+      const experienceMatch = search.experience === 'all' || job.experience === search.experience;
+      const salaryMatch = search.salary === 'all' || job.salary === search.salary;
 
-      return keywordMatch && locationMatch && experienceMatch && salaryMatch
-    })
-    setFilteredJobList(filteredJobs)
-  }
+      return keywordMatch && locationMatch && experienceMatch && salaryMatch;
+    });
+    setFilteredJobList(filteredJobs);
+  };
 
   useEffect(() => {
-    handleSearch()
-  }, [])
+    handleSearch();
+  }, []);
 
-  // panigate
-  const [currentPage, setCurrentPage] = useState(0)
-  const itemsPerPage = 3
-  const pageCount = Math.ceil(jobFiltered.length / itemsPerPage)
+  // pagination
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 12; // 4 jobs per row x 3 rows = 12 items
+  const pageCount = Math.ceil(jobFiltered.length / itemsPerPage);
   const handlePageChange = ({ selected }) => {
-    setCurrentPage(selected)
-  }
+    setCurrentPage(selected);
+  };
 
-  const displayItems = jobFiltered.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
+  const displayItems = jobFiltered
+  .filter((job) => job.status === true) // Lọc các công việc có status là true
+  .slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
-  const jobdatas =
-    displayItems !== null ? (
-      displayItems.map((job) => {
-        return job.status === true ? (
-          <Box
-            _hover={{
-              boxShadow: 'xl',
-              transition: 'all 0.2s ease-in-out',
-              transform: 'translate(2px, -5px)',
-            }}
-            m={5}
-            onClick={() => navigate(`/jobDetail/${job.id}`)}
-            key={job.id}
-            maxW='sm'
-            borderRadius='lg'
-            fontFamily={'Montserrat'}
-            overflow='hidden'>
-            <Image w={'100%'} h={164} src={job.image} fallbackSrc='https://static.tintuc.com.vn/images/ver3/2020/02/06/1580924892844-screenshot-135.png' />
+  const jobdatas = displayItems !== null ? (
+    displayItems.map((job) => {
+      return job.status === true ? (
+        <Box
+          _hover={{
+            boxShadow: 'xl',
+            transition: 'all 0.2s ease-in-out',
+            transform: 'translate(2px, -5px)',
+          }}
+          m={5}
+          onClick={() => navigate(`/jobDetail/${job.id}`)}
+          key={job.id}
+          maxW='sm'
+          borderRadius='lg'
+          fontFamily={'Montserrat'}
+          overflow='hidden'>
+          <Image w={'100%'} h={164} src={job.image} fallbackSrc='https://static.tintuc.com.vn/images/ver3/2020/02/06/1580924892844-screenshot-135.png' />
 
-            <Box p='6'>
-              <Box display='flex' alignItems='baseline'>
-                <Box color='gray.500' fontWeight='semibold' letterSpacing='wide' fontSize='xs' textTransform='uppercase'>
-                  {job.name}
-                </Box>
+          <Box p='6'>
+            <Box display='flex' alignItems='baseline'>
+              <Box color='gray.500' fontWeight='semibold' letterSpacing='wide' fontSize='xs' textTransform='uppercase'>
+                {job.name}
               </Box>
+            </Box>
 
-              <Box mt='1' fontWeight='semibold' as='h4' lineHeight='tight' noOfLines={1}>
-                {job.title}
+            <Box mt='1' fontWeight='semibold' as='h4' lineHeight='tight' noOfLines={1}>
+              {job.title}
+            </Box>
+
+            <Box display='flex'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth={1.5}
+                stroke='currentColor'
+                className='w-6 h-6'>
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z'
+                />
+              </svg>
+              <Box ml={2} as='span' color='gray.600' fontSize='sm'>
+                {job.salary}
               </Box>
+            </Box>
 
-              <Box display='flex'>
-                <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='w-6 h-6'>
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z'
-                  />
-                </svg>
-                <Box ml={2} as='span' color='gray.600' fontSize='sm'>
-                  {job.salary}
-                </Box>
+            <Box display='flex' mt='2' alignItems='center'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth={1.5}
+                stroke='currentColor'
+                className='w-6 h-6'>
+                <path strokeLinecap='round' strokeLinejoin='round' d='M15 10.5a3 3 0 11-6 0 3 3 0 016 0z' />
+                <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z' />
+              </svg>
+              <Box ml={2} as='span' color='gray.600' fontSize='sm'>
+                {job.location}
               </Box>
+            </Box>
 
-              <Box display='flex' mt='2' alignItems='center'>
-                <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='w-6 h-6'>
-                  <path strokeLinecap='round' strokeLinejoin='round' d='M15 10.5a3 3 0 11-6 0 3 3 0 016 0z' />
-                  <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z' />
-                </svg>
-                <Box ml={2} as='span' color='gray.600' fontSize='sm'>
-                  {job.location}
-                </Box>
-              </Box>
-
-              <Box display='flex' mt='2' alignItems='center'>
-                <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='w-6 h-6'>
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z'
-                  />
-                </svg>
-                <Box ml={2} as='span' color='gray.600' fontSize='sm'>
-                  {job.workingForm}
-                </Box>
+            <Box display='flex' mt='2' alignItems='center'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth={1.5}
+                stroke='currentColor'
+                className='w-6 h-6'>
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z'
+                />
+              </svg>
+              <Box ml={2} as='span' color='gray.600' fontSize='sm'>
+                {job.workingForm}
               </Box>
             </Box>
           </Box>
-        ) : (
-          <></>
-        )
-      })
-    ) : (
-      <Center direction='row' spacing={4} w={'80vw'} h={'20vw'}>
-        <Spinner color='blue.500' size='xl' />
-      </Center>
-    )
+        </Box>
+      ) : (
+        <></>
+      );
+    })
+  ) : (
+    <Center direction='row' spacing={4} w={'80vw'} h={'20vw'}>
+      <Spinner color='blue.500' size='xl' />
+    </Center>
+  );
 
   return (
     <>
       <Box mb={10} fontFamily={'Montserrat'} alignItems={'center'} w={'100%'}>
         <VStack>
-          <Box mt='120px' fontWeight='bold' width='80%' fontSize='20px'>
+        <Box mt='120px' fontWeight='bold' width='80%' fontSize='20px'>
             <Container h={'70px'} maxW={'100%'}>
               <Flex boxShadow='base' p='6' rounded='md' bg='white' w={'995px'} h={'100%'} m={'auto'} borderRadius={'50px'} pl={'24px'} pr={'9px'} py={'9px'}>
                 <Box w={'28px'} display={'flex'} alignItems={'center'}>
@@ -205,7 +222,7 @@ const JobPage = () => {
             </Container>
           </Box>
           <Box w={'80%'} display='flex' justifyContent='space-between'>
-            <SimpleGrid w='100%' top='50' left='50' ml='10' mt='50px' mr='10' columns={3} spacing={'5'}>
+            <SimpleGrid w='100%' top='50' left='50' ml='10' mt='50px' mr='10' columns={4} spacing={'5'}>
               {jobdatas}
             </SimpleGrid>
           </Box>
@@ -230,7 +247,7 @@ const JobPage = () => {
         </VStack>
       </Box>
     </>
-  )
-}
+  );
+};
 
-export default JobPage
+export default JobPage;
