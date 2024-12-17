@@ -52,7 +52,7 @@ const AllRoutes = () => {
             <Route path="/jobpage-search/:location/:experience/:salary" element={<JobPage/>} />
             <Route path="/jobpage/:jobId" element={<JobDetail />} />
             <Route path="/services" element={<ServicesPage />} />
-
+ 
             <Route path="/news" element={<News2/>} />
             <Route path="/news/:id" element={<NewDetailHome />} />
 
