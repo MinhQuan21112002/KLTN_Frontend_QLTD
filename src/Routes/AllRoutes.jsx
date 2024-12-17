@@ -40,7 +40,7 @@ const AllRoutes = () => {
             <Route path="/logout" element={<Logout />} />
             {/* Don't Touch it Starts*/}
             <Route path="/" element={<HomePage />} />
-            <Route path="/companies" element={<Companies />} />
+            <Route path="/companies" element={<Companies/>} />
             <Route path="/companies/:id" element={<CompanyProfile />} />
             {/* Don't Touch it Ends*/}
 
