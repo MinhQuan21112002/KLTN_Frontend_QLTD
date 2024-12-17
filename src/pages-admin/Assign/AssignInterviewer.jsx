@@ -57,6 +57,9 @@ export const AssignInterviewer = ({ roomId }) => {
       .catch((error) => console.log(error))
   }, [])
 
+
+  const data=JSON.parse(localStorage.getItem('data'));
+  const filteredInterviewers = interviewer.filter(inter => inter.reccerID === data.data.userInfo.id);
   return (
     <>
       <Button fontFamily={'Montserrat'} fontWeight={400} colorScheme='blue' onClick={onOpen}>
@@ -69,7 +72,7 @@ export const AssignInterviewer = ({ roomId }) => {
               Assign Interviewer
             </AlertDialogHeader>
             <AlertDialogBody style={{ maxHeight: '500px', overflowY: 'auto' }}>
-              {interviewer.map((interviewer) => (
+              {filteredInterviewers.map((interviewer) => (
                 <Box maxW='sm' borderWidth='3px' borderRadius='lg' overflow='hidden' m={2}>
                   <WrapItem m={2} alignItems='center'>
                     <Avatar name={interviewer.fullName} src={interviewer.avatar} />
