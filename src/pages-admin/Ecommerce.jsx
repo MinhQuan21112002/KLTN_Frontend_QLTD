@@ -179,7 +179,7 @@ const Ecommerce = () => {
             <div className=' border-r-1 border-color m-4 pr-10'>
               <div>
                 <p>
-                  <span className='text-3xl font-semibold'>{cvChartData.reduce((acc, cv) => acc + cv.y, 0)}</span>
+                  <span className='text-3xl font-semibold'></span>
                 </p>
                 <p className='text-gray-500 mt-1'>Lượt ứng tuyển</p>
               </div>

@@ -62,7 +62,9 @@ const Login = () => {
         cookies.set("roommail", email);
         cookies.set("username", data.data.username);
         window.location.replace(`${webHost}`);
-      } else if (data.message === "Your account is not activate!!!") {
+      } else if (data.message === "Your account is banned") {
+        toast.error(data.message, { position: "top-center" });
+      }  else if (data.message === "Your account is not activate!!!") {
         toast.error(data.message, { position: "top-center" });
         await axios.post(`${hostName}/auth/send-otp`, { email }, config);
         setTimeout(() => navigate(`/verify/${email}`), 2000);
@@ -102,7 +104,10 @@ const Login = () => {
           console.log(data.access_token);
           window.location.replace(`${webHost}`);
           
-        } else if (data.message === "Your account is not activate!!!") {
+        } else if (data.message === "Your account is banned") {
+          toast.error(data.message, { position: "top-center" });
+        }
+        else if (data.message === "Your account is not activate!!!") {
           toast.error(data.message, { position: "top-center" });
           await axios.post(`${hostName}/auth/send-otp`, googleEmail , config);
           setTimeout(() => navigate(`/verify/${googleEmail}`), 2000);
