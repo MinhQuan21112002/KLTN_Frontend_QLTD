@@ -10,9 +10,7 @@ jobs:
       - run:
           name: Install dependencies with legacy-peer-deps
           command: npm install --legacy-peer-deps
-      - run:
-          command: npm start
-      # Copy output to artifacts dir
+     
       - run:
           name: Copy artifacts
           command: cp -R build dist public .output .next .docusaurus ~/artifacts 2>/dev/null || true
