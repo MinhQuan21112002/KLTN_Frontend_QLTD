@@ -65,6 +65,11 @@
     "eject": "react-scripts eject",
     "dev": "react-scripts start"
   },
+  "jest": {
+  "transformIgnorePatterns": [
+    "/node_modules/(?!(axios)/)" 
+  ]
+},
   "eslintConfig": {
     "extends": [
       "react-app",
