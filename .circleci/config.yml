@@ -11,10 +11,7 @@ jobs:
           name: Install dependencies with legacy-peer-deps
           command: npm install --legacy-peer-deps
       - run:
-          command: npm run build
-      - run:
-          name: Create the ~/artifacts directory if it doesn't exist
-          command: mkdir -p ~/artifacts
+          command: npm start
       # Copy output to artifacts dir
       - run:
           name: Copy artifacts
