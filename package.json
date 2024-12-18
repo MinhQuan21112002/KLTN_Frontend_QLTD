@@ -58,13 +58,14 @@
     "uuid": "^9.0.1",
     "web-vitals": "^2.1.4"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "dev": "react-scripts start"
-  },
+"scripts": {
+  "start": "react-scripts start",
+  "build": "NODE_OPTIONS=--max_old_space_size=4096 react-scripts build",
+  "test": "react-scripts test",
+  "eject": "react-scripts eject",
+  "dev": "react-scripts start"
+},
+
   "jest": {
   "transformIgnorePatterns": [
     "/node_modules/(?!(axios)/)" 
