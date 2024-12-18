@@ -23,7 +23,7 @@ jobs:
           path: ~/artifacts
           destination: node-build
 workflows:
-  build-and-test:
+  build:
     jobs:
       - build-node:
           requires:
