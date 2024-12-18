@@ -25,9 +25,4 @@ jobs:
 workflows:
   build:
     jobs:
-      - build-node:
-          requires:
-            - test-node
-      - deploy:
-          requires:
-            - build-node
+      - build-node
