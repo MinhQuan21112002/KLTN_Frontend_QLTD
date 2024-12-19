@@ -41,32 +41,18 @@ const Customers = () => {
   }, [change])
  
   const handleAddBlackList = (id) => {
-    const forms = {
-      userId: id,
-      description: 'string',
-    };
+  
     userService
-      .addBlacklist(accessToken, forms)
+      .banOrUnBan(accessToken, id)
       .then((res) => {
-        toast.success(res.message);
+        toast.success("Đổi trạng thái thành công");
         setChange((prev) => !prev); // Kích hoạt lại useEffect
       
       })
       .catch((error) => console.log(error.message));
   };
   
-  const handleRemoveBlackList = (id) => {
-    userService
-      .removeBlacklist(accessToken, id)
-      .then((res) => {
-        toast.success(res.message);
-        setChange((prev) => !prev); // Kích hoạt lại useEffect
-       
-      })
-      .catch((error) => console.log(error.message));
-  };
   
-  console.log(hrs);
 if (loading) {
     return (
       <Box fontFamily={'Montserrat'} fontWeight={400} backgroundColor={'#e9f3f5'} p={30} overflow='hidden'>
@@ -115,12 +101,12 @@ if (loading) {
                       </VStack>
                     </HStack>
 
-                    {hr.status === 'INPROCESS' ? (
+                    {hr.accountStatus === 'ACTIVE' ? (
                       <Button onClick={() => handleAddBlackList(hr.id)} color={'white'} backgroundColor={'#30f0b6'}>
                           ACTIVE
                       </Button>
                     ) : (
-                      <Button onClick={() => handleRemoveBlackList(hr.id)} color={'white'} backgroundColor={'#fa236e'}>
+                      <Button onClick={() => handleAddBlackList(hr.id)} color={'white'} backgroundColor={'#fa236e'}>
                         DISABLE
                       </Button>
                     )}
