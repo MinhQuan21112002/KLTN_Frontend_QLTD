@@ -19,14 +19,7 @@ import { cvService } from '../../Service/cv.service'
 const Stacked = ({ width, height, cvData ,jobData}) => {
   const { currentMode } = useStateContext()
   const stackedCustomSeriesW = [
-    {
-      dataSource: jobData,
-      xName: 'x',
-      yName: 'y',
-      name: 'Bài đăng',
-      type: 'StackingColumn',
-      background: 'blue',
-    },
+ 
 
     {
       dataSource: cvData,

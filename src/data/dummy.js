@@ -541,11 +541,6 @@ export const links = [
         icon: <IoAlbumsOutline />,
       },
       {
-        name: 'line',
-        title: 'Thống kê',
-        icon: <IoStatsChartOutline />,
-      },
-      {
         name: 'ChatApp',
         title: 'Message',
         icon: <IoChatbubblesOutline/>,
